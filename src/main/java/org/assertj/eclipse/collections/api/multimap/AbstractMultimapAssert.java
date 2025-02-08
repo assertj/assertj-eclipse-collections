@@ -51,6 +51,14 @@ public class AbstractMultimapAssert<SELF extends AbstractMultimapAssert<SELF, AC
     return this.containsForProxy(Lists.mutable.of(entries));
   }
 
+  /**
+   * Verifies that the actual {@code Multimap} contains the provided entries. Entries are provided as
+   * an array of {@code Map.Entry} objects.
+   *
+   * @param entries the entries that are expected to be contained within the {@code Multimap}.
+   * @return this assertion object for method chaining.
+   * @throws AssertionError if the actual {@code Multimap} does not contain one or more of the specified entries.
+   */
   @SafeVarargs
   public final SELF contains(Map.Entry<KEY, VALUE>... entries) {
     MutableList<Pair<KEY, VALUE>> pairs = Lists.mutable.of(entries).collect(Tuples::pairFrom);

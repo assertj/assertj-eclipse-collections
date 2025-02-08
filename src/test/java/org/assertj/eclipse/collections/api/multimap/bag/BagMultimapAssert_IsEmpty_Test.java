@@ -2,7 +2,6 @@ package org.assertj.eclipse.collections.api.multimap.bag;
 
 import org.assertj.eclipse.collections.api.SoftAssertions;
 import org.assertj.eclipse.collections.api.multimap.AbstractMultimapAssert_IsEmpty_Contract;
-import org.assertj.eclipse.collections.api.multimap.bag.BagMultimapAssert;
 import org.eclipse.collections.api.factory.Bags;
 import org.eclipse.collections.api.multimap.bag.BagMultimap;
 import org.eclipse.collections.api.multimap.bag.MutableBagMultimap;

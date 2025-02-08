@@ -2,10 +2,9 @@ package org.assertj.eclipse.collections.api.multimap.set;
 
 import org.assertj.eclipse.collections.api.SoftAssertions;
 import org.assertj.eclipse.collections.api.multimap.AbstractMultimapAssert_IsEmpty_Contract;
-import org.assertj.eclipse.collections.api.multimap.set.SetMultimapAssert;
 import org.eclipse.collections.api.factory.Sets;
-import org.eclipse.collections.api.multimap.set.SetMultimap;
 import org.eclipse.collections.api.multimap.set.MutableSetMultimap;
+import org.eclipse.collections.api.multimap.set.SetMultimap;
 import org.eclipse.collections.impl.factory.Multimaps;
 
 class SetMultimapAssert_IsEmpty_Test implements AbstractMultimapAssert_IsEmpty_Contract<String, String, SetMultimap<String, String>, SetMultimapAssert<String, String>> {

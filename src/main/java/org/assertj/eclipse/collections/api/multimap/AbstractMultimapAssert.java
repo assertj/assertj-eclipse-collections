@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.core.error.ShouldContain.shouldContain;
+import static org.assertj.core.error.ShouldContainKey.shouldContainKey;
 import static org.assertj.core.error.ShouldContainKeys.shouldContainKeys;
 import static org.assertj.core.error.ShouldContainValue.shouldContainValue;
 import static org.assertj.core.error.ShouldHaveSizeLessThanOrEqualTo.shouldHaveSizeLessThanOrEqualTo;
@@ -121,6 +122,25 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
       return this.myself;
     }
     throw this.assertionError(shouldContainKeys(this.actual, keysNotFound.toSet()));
+  }
+
+  /**
+   * Verifies that at least one key in the actual {@link Multimap} satisfies the given condition.
+   *
+   * @param keyCondition the condition to evaluate the keys against; must not be null.
+   * @return this assertion object for method chaining.
+   * @throws NullPointerException if the provided condition is null.
+   * @throws AssertionError       if none of the keys in the {@link Multimap} satisfy the given condition.
+   */
+  public SELF hasKeySatisfying(Condition<? super KEY> keyCondition) {
+    this.isNotNull();
+    requireNonNull(keyCondition, "The condition to evaluate should not be null");
+
+    if (this.actual.keysView().anySatisfy(keyCondition::matches)) {
+      return this.myself;
+    }
+
+    throw this.assertionError(shouldContainKey(this.actual, keyCondition));
   }
 
   /**

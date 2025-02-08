@@ -9,6 +9,7 @@ import static org.assertj.core.error.ShouldContainKeys.shouldContainKeys;
 import static org.assertj.core.error.ShouldContainValue.shouldContainValue;
 import static org.assertj.core.error.ShouldHaveSizeLessThanOrEqualTo.shouldHaveSizeLessThanOrEqualTo;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
+import static org.assertj.eclipse.collections.error.ShouldHaveDistinctSize.shouldHaveDistinctSize;
 
 import java.util.Map;
 
@@ -122,6 +123,22 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
       return this.myself;
     }
     throw this.assertionError(shouldContainKeys(this.actual, keysNotFound.toSet()));
+  }
+
+  /**
+   * Verifies that the actual {@code Multimap} has the expected number of distinct keys.
+   *
+   * @param expected the expected number of distinct keys in the {@code Multimap}.
+   * @return this assertion object for method chaining.
+   * @throws AssertionError if the actual number of distinct keys in the {@code Multimap} does not match the expected size.
+   */
+  public SELF hasDistinctSize(int expected) {
+    this.isNotNull();
+    int actualSize = this.actual.sizeDistinct();
+    if (actualSize == expected) {
+      return this.myself;
+    }
+    throw this.assertionError(shouldHaveDistinctSize(this.actual, actualSize, expected));
   }
 
   /**

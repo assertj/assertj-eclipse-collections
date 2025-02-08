@@ -7,6 +7,7 @@ import static org.assertj.core.error.ShouldContain.shouldContain;
 import static org.assertj.core.error.ShouldContainKey.shouldContainKey;
 import static org.assertj.core.error.ShouldContainKeys.shouldContainKeys;
 import static org.assertj.core.error.ShouldContainValue.shouldContainValue;
+import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldHaveSizeLessThanOrEqualTo.shouldHaveSizeLessThanOrEqualTo;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 import static org.assertj.eclipse.collections.error.ShouldHaveDistinctSize.shouldHaveDistinctSize;
@@ -158,6 +159,34 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
     }
 
     throw this.assertionError(shouldContainKey(this.actual, keyCondition));
+  }
+
+  /**
+   * Verifies that the number of key-value entry pairs in the {@link Multimap} is equal to the given one.
+   * <p>
+   * Example:
+   * <pre>{@code
+   * Multimap<String, String> multimap = Multimaps.mutable.list.with("Key", "Value1", "Key", "Value2");
+   *
+   * // assertion will pass
+   * assertThat(multimap).hasSize(2);
+   *
+   * // assertions will fail
+   * assertThat(multimap).hasSize(0);
+   * assertThat(multimap).hasSize(1);
+   * }</pre>
+   *
+   * @param expected the expected size of the {@link Multimap}.
+   * @return {@code this} assertion object.
+   * @throws AssertionError if the actual size of the {@link Multimap} is not equal to the expected size.
+   */
+  public SELF hasSize(int expected) {
+    this.isNotNull();
+    int actualSize = this.actual.size();
+    if (actualSize == expected) {
+      return this.myself;
+    }
+    throw this.assertionError(shouldHaveSize(this.actual, actualSize, expected));
   }
 
   /**

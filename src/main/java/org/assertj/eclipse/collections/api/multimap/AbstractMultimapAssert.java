@@ -6,6 +6,7 @@ import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 import static org.assertj.core.error.ShouldContainKeys.shouldContainKeys;
 import static org.assertj.core.error.ShouldContainValue.shouldContainValue;
+import static org.assertj.core.error.ShouldHaveSizeLessThanOrEqualTo.shouldHaveSizeLessThanOrEqualTo;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 
 import java.util.Map;
@@ -123,12 +124,41 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
   }
 
   /**
+   * Verifies that the number of key-value entry pairs in the {@link Multimap} is less than or equal to the boundary.
+   * <p>
+   * Example:
+   * <pre>{@code
+   * Multimap<String, String> multimap = Multimaps.mutable.list.with("Key1", "Value1", "Key2", "Value2");
+   *
+   * // assertion will pass
+   * assertThat(multimap).hasSizeLessThanOrEqualTo(2)
+   *                     .hasSizeLessThanOrEqualTo(3);
+   *
+   * // assertions will fail
+   * assertThat(multimap).hasSizeLessThanOrEqualTo(0);
+   * assertThat(multimap).hasSizeLessThanOrEqualTo(1);
+   * }</pre>
+   *
+   * @param boundary the maximum expected size of the {@link Multimap}.
+   * @return {@code this} assertion object for method chaining.
+   * @throws AssertionError if the actual size of the {@link Multimap} is greater than the expected size.
+   */
+  public SELF hasSizeLessThanOrEqualTo(int boundary) {
+    this.isNotNull();
+    int actualSize = this.actual.size();
+    if (actualSize <= boundary) {
+      return this.myself;
+    }
+    throw this.assertionError(shouldHaveSizeLessThanOrEqualTo(this.actual, actualSize, boundary));
+  }
+
+  /**
    * Verifies that at least one value in the actual {@link Multimap} satisfies the given condition.
    *
    * @param valueCondition the condition to evaluate the values against; must not be null.
    * @return this assertion object for method chaining.
    * @throws NullPointerException if the provided condition is null.
-   * @throws AssertionError if none of the values in the {@link Multimap} satisfy the given condition.
+   * @throws AssertionError       if none of the values in the {@link Multimap} satisfy the given condition.
    */
   public SELF hasValueSatisfying(Condition<? super VALUE> valueCondition) {
     this.isNotNull();

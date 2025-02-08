@@ -3,6 +3,7 @@ package org.assertj.eclipse.collections.api.multimap;
 import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 import static org.assertj.core.error.ShouldContainKeys.shouldContainKeys;
+import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 
 import java.util.Map;
 
@@ -115,6 +116,30 @@ public class AbstractMultimapAssert<SELF extends AbstractMultimapAssert<SELF, AC
       return this.myself;
     }
     throw this.assertionError(shouldContainKeys(this.actual, keysNotFound.toSet()));
+  }
+
+  /**
+   * Verifies that the {@link Multimap} is not empty.
+   * <p>
+   * Example:
+   * <pre>{@code
+   * // assertion will pass
+   * Multimap<String, String> multimap = Multimaps.mutable.list.with("Key", "Value");
+   * assertThat(multimap).isNotEmpty();
+   *
+   * // assertion will fail
+   * assertThat(Multimaps.mutable.list.empty()).isNotEmpty();
+   * }</pre>
+   *
+   * @return this assertion object for method chaining
+   * @throws AssertionError if the {@link Multimap} of values is empty.
+   */
+  public SELF isNotEmpty() {
+    this.isNotNull();
+    if (!this.actual.isEmpty()) {
+      return this.myself;
+    }
+    throw this.assertionError(shouldNotBeEmpty());
   }
 
   /**

@@ -12,7 +12,7 @@ import org.eclipse.collections.api.multimap.list.MutableListMultimap;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Multimaps;
 
-public class ListMultimapAssert_Contains_Test implements AbstractMultimapAssert_Contains_Contract<String, String, ListMultimap<String, String>, ListMultimapAssert<String, String>> {
+class ListMultimapAssert_Contains_Test implements AbstractMultimapAssert_Contains_Contract<String, String, ListMultimap<String, String>, ListMultimapAssert<String, String>> {
   @Override
   public ListMultimap<String, String> testInput() {
     MutableListMultimap<String, String> multimap = Multimaps.mutable.list.of();

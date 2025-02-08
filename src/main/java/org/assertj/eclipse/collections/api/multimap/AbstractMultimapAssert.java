@@ -27,6 +27,25 @@ public class AbstractMultimapAssert<SELF extends AbstractMultimapAssert<SELF, AC
     super(actual, selfType);
   }
 
+  /**
+   * Verifies that the actual {@link Multimap} contains the given entries. Entries are given in the form of {@link
+   * Pair} objects.
+   * <p>
+   * Example:
+   * <pre>{@code
+   *     Multimap<String, String> multimap = Multimaps.mutable.list.with("Key1", "Value1", "Key2", "Value2");
+   *
+   *     // assertion will pass
+   *     assertThat(multimap).contains(Tuples.pair("Key1", "Value1"), Tuples.pair("Key2", "Value2"));
+   *
+   *     // assertion will fail
+   *     assertThat(multimap).contains(Tuples.pair("Key1", "Value3"), Tuples.pair("Key2", "Value1"));
+   *     }</pre>
+   *
+   * @param entries the entries that are expected to be present in the {@link Multimap}.
+   * @return this assertion object.
+   * @throws AssertionError if the actual {@link Multimap} does not contain the given entries
+   */
   @SafeVarargs
   public final SELF contains(Pair<KEY, VALUE>... entries) {
     return this.containsForProxy(Lists.mutable.of(entries));
@@ -49,6 +68,18 @@ public class AbstractMultimapAssert<SELF extends AbstractMultimapAssert<SELF, AC
   }
 
   /**
+   * Verifies that the actual {@link Multimap} contains the given key-value entry.
+   *
+   * @param key the key that is expected to be present in the {@link Multimap}.
+   * @param value the value that is expected to be associated with the given key in the {@link Multimap}.
+   * @return this assertion object for method chaining.
+   * @throws AssertionError if the actual {@link Multimap} does not contain the given key-value entry.
+   */
+  public SELF containsEntry(KEY key, VALUE value) {
+    return this.contains(Tuples.pair(key, value));
+  }
+
+  /**
    * Verifies that the actual {@link Multimap} contains the given keys.
    * <p>
    * Example:
@@ -66,12 +97,10 @@ public class AbstractMultimapAssert<SELF extends AbstractMultimapAssert<SELF, AC
    * @return this assertion object.
    * @throws AssertionError if the actual {@link Multimap} does not contain the given keys.
    */
-  public SELF containsKeys(KEY... keys)
-  {
+  public SELF containsKeys(KEY... keys) {
     this.isNotNull();
     MutableList<KEY> keysNotFound = Lists.mutable.of(keys).reject(this.actual::containsKey);
-    if (keysNotFound.isEmpty())
-    {
+    if (keysNotFound.isEmpty()) {
       return this.myself;
     }
     throw this.assertionError(shouldContainKeys(this.actual, keysNotFound.toSet()));

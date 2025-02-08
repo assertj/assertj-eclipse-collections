@@ -7,7 +7,7 @@ import org.eclipse.collections.api.multimap.set.MutableSetMultimap;
 import org.eclipse.collections.api.multimap.set.SetMultimap;
 import org.eclipse.collections.impl.factory.Multimaps;
 
-public class SetMultimapAssert_ContainsKeys_Test implements AbstractMultimapAssert_ContainsKeys_Contract<String, String, SetMultimap<String, String>, SetMultimapAssert<String, String>> {
+class SetMultimapAssert_ContainsKeys_Test implements AbstractMultimapAssert_ContainsKeys_Contract<String, String, SetMultimap<String, String>, SetMultimapAssert<String, String>> {
   @Override
   public SetMultimap<String, String> testInput() {
     MutableSetMultimap<String, String> multimap = Multimaps.mutable.set.of();

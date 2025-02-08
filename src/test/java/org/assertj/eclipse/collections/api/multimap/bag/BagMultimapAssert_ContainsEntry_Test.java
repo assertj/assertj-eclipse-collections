@@ -2,17 +2,16 @@ package org.assertj.eclipse.collections.api.multimap.bag;
 
 import static org.eclipse.collections.impl.tuple.Tuples.pair;
 
-import java.util.Map;
-
 import org.assertj.eclipse.collections.api.SoftAssertions;
-import org.assertj.eclipse.collections.api.multimap.AbstractMultimapAssert_Contains_Contract;
+import org.assertj.eclipse.collections.api.multimap.AbstractMultimapAssert_ContainsEntry_Contract;
 import org.eclipse.collections.api.factory.Bags;
 import org.eclipse.collections.api.multimap.bag.BagMultimap;
 import org.eclipse.collections.api.multimap.bag.MutableBagMultimap;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Multimaps;
+import org.eclipse.collections.impl.tuple.Tuples;
 
-class BagMultimapAssert_Contains_Test implements AbstractMultimapAssert_Contains_Contract<String, String, BagMultimap<String, String>, BagMultimapAssert<String, String>> {
+class BagMultimapAssert_ContainsEntry_Test implements AbstractMultimapAssert_ContainsEntry_Contract<String, String, BagMultimap<String, String>, BagMultimapAssert<String, String>> {
   @Override
   public BagMultimap<String, String> testInput() {
     MutableBagMultimap<String, String> multimap = Multimaps.mutable.bag.of();
@@ -40,22 +39,12 @@ class BagMultimapAssert_Contains_Test implements AbstractMultimapAssert_Contains
   }
 
   @Override
-  public Pair<String, String>[] expectedPairs() {
-    return new Pair[]{pair("TOS", "McCoy"), pair("TNG", "Crusher")};
-  }
-
-  @Override
-  public Map.Entry<String, String>[] expectedEntries() {
-    return new Map.Entry[]{pair("TOS", "McCoy").toEntry(), pair("TNG", "Crusher").toEntry()};
+  public Pair<String, String> expectedEntry() {
+    return Tuples.pair("ENT", "Reed");
   }
 
   @Override
   public Pair<String, String> missingPair() {
     return pair("VOY", "Kes");
-  }
-
-  @Override
-  public Map.Entry<String, String> missingEntry() {
-    return missingPair().toEntry();
   }
 }

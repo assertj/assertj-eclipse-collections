@@ -1,14 +1,17 @@
 package org.assertj.eclipse.collections.api.multimap;
 
+import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 import static org.assertj.core.error.ShouldContainKeys.shouldContainKeys;
+import static org.assertj.core.error.ShouldContainValue.shouldContainValue;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 
 import java.util.Map;
 
 import org.assertj.core.api.AbstractObjectAssert;
+import org.assertj.core.api.Condition;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.multimap.Multimap;
@@ -117,6 +120,24 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
       return this.myself;
     }
     throw this.assertionError(shouldContainKeys(this.actual, keysNotFound.toSet()));
+  }
+
+  /**
+   * Verifies that at least one value in the actual {@link Multimap} satisfies the given condition.
+   *
+   * @param valueCondition the condition to evaluate the values against; must not be null.
+   * @return this assertion object for method chaining.
+   * @throws NullPointerException if the provided condition is null.
+   * @throws AssertionError if none of the values in the {@link Multimap} satisfy the given condition.
+   */
+  public SELF hasValueSatisfying(Condition<? super VALUE> valueCondition) {
+    this.isNotNull();
+    requireNonNull(valueCondition, "The condition to evaluate should not be null");
+
+    if (this.actual.valuesView().anySatisfy(valueCondition::matches)) {
+      return this.myself;
+    }
+    throw this.assertionError(shouldContainValue(this.actual, valueCondition));
   }
 
   /**

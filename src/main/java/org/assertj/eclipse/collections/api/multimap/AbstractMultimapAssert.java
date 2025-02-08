@@ -1,6 +1,7 @@
 package org.assertj.eclipse.collections.api.multimap;
 
 import static org.assertj.core.error.ShouldContain.shouldContain;
+import static org.assertj.core.error.ShouldContainKeys.shouldContainKeys;
 
 import java.util.Map;
 
@@ -45,5 +46,34 @@ public class AbstractMultimapAssert<SELF extends AbstractMultimapAssert<SELF, AC
       return this.myself;
     }
     throw this.assertionError(shouldContain(this.actual, entries, entriesNotFound));
+  }
+
+  /**
+   * Verifies that the actual {@link Multimap} contains the given keys.
+   * <p>
+   * Example:
+   * <pre>{@code
+   * Multimap<String, String> multimap = Multimaps.mutable.list.with("Key1", "Value1", "Key2", "Value2");
+   *
+   * // assertion will pass
+   * assertThat(multimap).containsKeys("Key1", "Key2");
+   *
+   * // assertion will fail
+   * assertThat(multimap).containsKeys("Key3");
+   * }</pre>
+   *
+   * @param keys the keys that are expected to be present in the {@link Multimap}.
+   * @return this assertion object.
+   * @throws AssertionError if the actual {@link Multimap} does not contain the given keys.
+   */
+  public SELF containsKeys(KEY... keys)
+  {
+    this.isNotNull();
+    MutableList<KEY> keysNotFound = Lists.mutable.of(keys).reject(this.actual::containsKey);
+    if (keysNotFound.isEmpty())
+    {
+      return this.myself;
+    }
+    throw this.assertionError(shouldContainKeys(this.actual, keysNotFound.toSet()));
   }
 }

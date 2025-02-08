@@ -1,5 +1,6 @@
 package org.assertj.eclipse.collections.api.multimap;
 
+import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 import static org.assertj.core.error.ShouldContainKeys.shouldContainKeys;
 
@@ -13,7 +14,7 @@ import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.tuple.Tuples;
 
 /**
- * Base class for all implementations of assertions for {@link Multimap}s.
+ * Base class for all implementations of assertions for {@link Multimap}.
  *
  * @param <SELF>   the "self" type of this assertion class.
  * @param <ACTUAL> the type of the "actual" value.
@@ -43,7 +44,7 @@ public class AbstractMultimapAssert<SELF extends AbstractMultimapAssert<SELF, AC
    *     }</pre>
    *
    * @param entries the entries that are expected to be present in the {@link Multimap}.
-   * @return this assertion object.
+   * @return this assertion object for method chaining.
    * @throws AssertionError if the actual {@link Multimap} does not contain the given entries
    */
   @SafeVarargs
@@ -78,10 +79,12 @@ public class AbstractMultimapAssert<SELF extends AbstractMultimapAssert<SELF, AC
   /**
    * Verifies that the actual {@link Multimap} contains the given key-value entry.
    *
-   * @param key the key that is expected to be present in the {@link Multimap}.
+   * @param key   the key that is expected to be present in the {@link Multimap}.
    * @param value the value that is expected to be associated with the given key in the {@link Multimap}.
    * @return this assertion object for method chaining.
    * @throws AssertionError if the actual {@link Multimap} does not contain the given key-value entry.
+   * @see #contains(Pair[])
+   * @see #contains(Map.Entry[])
    */
   public SELF containsEntry(KEY key, VALUE value) {
     return this.contains(Tuples.pair(key, value));
@@ -102,7 +105,7 @@ public class AbstractMultimapAssert<SELF extends AbstractMultimapAssert<SELF, AC
    * }</pre>
    *
    * @param keys the keys that are expected to be present in the {@link Multimap}.
-   * @return this assertion object.
+   * @return this assertion object for method chaining.
    * @throws AssertionError if the actual {@link Multimap} does not contain the given keys.
    */
   public SELF containsKeys(KEY... keys) {
@@ -112,5 +115,31 @@ public class AbstractMultimapAssert<SELF extends AbstractMultimapAssert<SELF, AC
       return this.myself;
     }
     throw this.assertionError(shouldContainKeys(this.actual, keysNotFound.toSet()));
+  }
+
+  /**
+   * Verifies that the {@link Multimap} is null or empty.
+   * <p>
+   * Example:
+   * <pre>{@code
+   * // assertions that will pass
+   * Multimap<String, String> multimap = null;
+   * assertThat(multimap).isNullOrEmpty();
+   *
+   * Multimap<String, String> emptyMultimap = Multimaps.mutable.list.empty();
+   * assertThat(emptyMultimap).isNullOrEmpty();
+   *
+   * // assertion will fail
+   * Multimap<String, String> multimapWithElements = Multimaps.mutable.list.with("Key", "Value");
+   * assertThat(multimapWithElements).isNullOrEmpty();
+   * }</pre>
+   *
+   * @throws AssertionError if the {@link Multimap} is either null or empty.
+   */
+  public void isNullOrEmpty() {
+    if (this.actual == null || this.actual.isEmpty()) {
+      return;
+    }
+    throw this.assertionError(shouldBeNullOrEmpty(this.actual));
   }
 }

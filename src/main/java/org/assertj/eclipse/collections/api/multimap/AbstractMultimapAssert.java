@@ -8,6 +8,7 @@ import static org.assertj.core.error.ShouldContainKey.shouldContainKey;
 import static org.assertj.core.error.ShouldContainKeys.shouldContainKeys;
 import static org.assertj.core.error.ShouldContainOnly.shouldContainOnly;
 import static org.assertj.core.error.ShouldContainValue.shouldContainValue;
+import static org.assertj.core.error.ShouldContainValues.shouldContainValues;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThan.shouldHaveSizeGreaterThan;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThanOrEqualTo.shouldHaveSizeGreaterThanOrEqualTo;
@@ -176,6 +177,22 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
 
     GroupTypeDescription groupTypeDescription = new GroupTypeDescription("multimap", "multimap entries");
     throw this.assertionError(shouldContainOnly(this.actual, entries, notFound, notExpected, groupTypeDescription));
+  }
+
+  /**
+   * Verifies that the actual map contains the given values.
+   *
+   * @param values the values expected to be present in the actual map
+   * @return the current assertion object for method chaining
+   * @throws AssertionError if the actual map does not contain the given values
+   */
+  public SELF containsValues(VALUE... values) {
+    this.isNotNull();
+    MutableList<VALUE> valuesNotFound = ArrayAdapter.adapt(values).reject(this.actual::containsValue);
+    if (valuesNotFound.isEmpty()) {
+      return this.myself;
+    }
+    throw this.assertionError(shouldContainValues(this.actual, valuesNotFound.toSet()));
   }
 
   /**

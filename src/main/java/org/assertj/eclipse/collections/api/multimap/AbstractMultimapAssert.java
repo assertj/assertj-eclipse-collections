@@ -200,7 +200,7 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
    */
   public SELF containsValues(VALUE... values) {
     this.isNotNull();
-    MutableList<VALUE> valuesNotFound = ArrayAdapter.adapt(values).reject(this.actual::containsValue);
+    MutableList<VALUE> valuesNotFound = Lists.mutable.of(values).reject(this.actual::containsValue);
     if (valuesNotFound.isEmpty()) {
       return this.myself;
     }

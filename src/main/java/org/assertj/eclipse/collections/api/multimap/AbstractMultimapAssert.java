@@ -28,6 +28,7 @@ import static org.assertj.core.error.ShouldHaveSizeLessThan.shouldHaveSizeLessTh
 import static org.assertj.core.error.ShouldHaveSizeLessThanOrEqualTo.shouldHaveSizeLessThanOrEqualTo;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 import static org.assertj.eclipse.collections.error.ShouldHaveDistinctSize.shouldHaveDistinctSize;
+import static org.assertj.eclipse.collections.error.ShouldHaveDistinctSizeGreaterThan.shouldHaveDistinctSizeGreaterThan;
 
 import java.util.Map;
 
@@ -221,6 +222,22 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
       return this.myself;
     }
     throw this.assertionError(shouldHaveDistinctSize(this.actual, actualSize, expected));
+  }
+
+  /**
+   * Verifies that the number of distinct keys in the {@link Multimap} is greater than the specified boundary.
+   *
+   * @param boundary the size that the actual number of distinct keys should exceed.
+   * @return {@code this} assertion object for method chaining.
+   * @throws AssertionError if the actual distinct size of the {@link Multimap} is not greater than the specified boundary.
+   */
+  public SELF hasDistinctSizeGreaterThan(int boundary) {
+    this.isNotNull();
+    int actualSize = this.actual.sizeDistinct();
+    if (actualSize > boundary) {
+      return this.myself;
+    }
+    throw this.assertionError(shouldHaveDistinctSizeGreaterThan(this.actual, actualSize, boundary));
   }
 
   /**

@@ -10,6 +10,7 @@ import static org.assertj.core.error.ShouldContainOnly.shouldContainOnly;
 import static org.assertj.core.error.ShouldContainValue.shouldContainValue;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThan.shouldHaveSizeGreaterThan;
+import static org.assertj.core.error.ShouldHaveSizeGreaterThanOrEqualTo.shouldHaveSizeGreaterThanOrEqualTo;
 import static org.assertj.core.error.ShouldHaveSizeLessThan.shouldHaveSizeLessThan;
 import static org.assertj.core.error.ShouldHaveSizeLessThanOrEqualTo.shouldHaveSizeLessThanOrEqualTo;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
@@ -266,6 +267,36 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
       return this.myself;
     }
     throw this.assertionError(shouldHaveSizeGreaterThan(this.actual, actualSize, boundary));
+  }
+
+  /**
+   * Verifies that the number of key-value entry pairs in the {@link Multimap} is greater than or equal to the
+   * boundary.
+   * <p>
+   * Example:
+   * <pre>{@code
+   * Multimap<String, String> multimap = Multimaps.mutable.list.with("Key1", "Value1", "Key2", "Value2");
+   *
+   * // assertions will pass
+   * assertThat(multimap).hasSizeGreaterThanOrEqualTo(1)
+   *                     .hasSizeGreaterThanOrEqualTo(2);
+   *
+   * // assertions will fail
+   * assertThat(multimap).hasSizeGreaterThanOrEqualTo(3);
+   * assertThat(multimap).hasSizeGreaterThanOrEqualTo(5);
+   * }</pre>
+   *
+   * @param boundary the minimum size (inclusive) the {@link Multimap} should have.
+   * @return {@code this} assertion object for method chaining.
+   * @throws AssertionError if the actual size of the {@link Multimap} is less than the expected size.
+   */
+  public SELF hasSizeGreaterThanOrEqualTo(int boundary) {
+    this.isNotNull();
+    int actualSize = this.actual.size();
+    if (actualSize >= boundary) {
+      return this.myself;
+    }
+    throw this.assertionError(shouldHaveSizeGreaterThanOrEqualTo(this.actual, actualSize, boundary));
   }
 
   /**

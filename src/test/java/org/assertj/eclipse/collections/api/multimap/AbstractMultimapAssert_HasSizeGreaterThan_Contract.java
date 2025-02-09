@@ -59,8 +59,8 @@ public interface AbstractMultimapAssert_HasSizeGreaterThan_Contract<KEY, VALUE, 
   @Test
   default void failsEmptyMultimap() {
     assertThatExceptionOfType(AssertionError.class)
-      .isThrownBy(() -> assertion(emptyInput()).hasSizeGreaterThan(upperBoundary()))
-      .withMessageContaining(String.format("to be greater than %s but was 0", upperBoundary()));
+      .isThrownBy(() -> assertion(emptyInput()).hasSizeGreaterThan(lowerBoundary()))
+      .withMessageContaining(String.format("to be greater than %s but was 0", lowerBoundary()));
   }
 
   @Test

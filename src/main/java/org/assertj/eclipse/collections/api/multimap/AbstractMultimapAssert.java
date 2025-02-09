@@ -6,6 +6,7 @@ import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 import static org.assertj.core.error.ShouldContainKey.shouldContainKey;
 import static org.assertj.core.error.ShouldContainKeys.shouldContainKeys;
+import static org.assertj.core.error.ShouldContainOnly.shouldContainOnly;
 import static org.assertj.core.error.ShouldContainValue.shouldContainValue;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldHaveSizeLessThan.shouldHaveSizeLessThan;
@@ -17,10 +18,14 @@ import java.util.Map;
 
 import org.assertj.core.api.AbstractObjectAssert;
 import org.assertj.core.api.Condition;
+import org.assertj.core.error.GroupTypeDescription;
+import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.multimap.Multimap;
+import org.eclipse.collections.api.partition.list.PartitionMutableList;
 import org.eclipse.collections.api.tuple.Pair;
+import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
 import org.eclipse.collections.impl.tuple.Tuples;
 
 /**
@@ -125,6 +130,50 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
       return this.myself;
     }
     throw this.assertionError(shouldContainKeys(this.actual, keysNotFound.toSet()));
+  }
+
+  /**
+   * Verifies that the map contains only the given entries.
+   *
+   * @param entries the array of map entries to validate against the map
+   * @return this assertion object for method chaining
+   * @throws AssertionError if the actual {@link Multimap} does not contain only the given entries.
+   */
+  @SafeVarargs
+  public final SELF containsOnly(Map.Entry<? extends KEY, ? extends VALUE>... entries) {
+    @SuppressWarnings("unchecked")
+    Pair<KEY, VALUE>[] pairs = ArrayAdapter.adapt(entries).collect(Tuples::pairFrom).toArray(new Pair[entries.length]);
+    return this.containsOnlyForProxy(pairs);
+  }
+
+  /**
+   * Verifies that the current object contains only the specified pairs of key-value entries.
+   *
+   * @param entries the pairs of key-value entries to check against
+   * @return this assertion object for method chaining
+   * @throws AssertionError if the actual {@link Multimap} does not contain only the given entries.
+   */
+  @SafeVarargs
+  public final SELF containsOnly(Pair<? extends KEY, ? extends VALUE>... entries) {
+    return this.containsOnlyForProxy(entries);
+  }
+
+  protected SELF containsOnlyForProxy(Pair<? extends KEY, ? extends VALUE>[] entries) {
+    this.isNotNull();
+    PartitionMutableList<Pair<? extends KEY, ? extends VALUE>> partition = ArrayAdapter
+      .adapt(entries)
+      .partition(entry -> this.actual.containsKeyAndValue(entry.getOne(), entry.getTwo()));
+
+    MutableList<Pair<? extends KEY, ? extends VALUE>> found = partition.getSelected();
+    MutableList<Pair<? extends KEY, ? extends VALUE>> notFound = partition.getRejected();
+    RichIterable<Pair<KEY, VALUE>> notExpected = this.actual.keyValuePairsView().reject(found::contains);
+
+    if (notFound.isEmpty() && notExpected.isEmpty()) {
+      return this.myself;
+    }
+
+    GroupTypeDescription groupTypeDescription = new GroupTypeDescription("multimap", "multimap entries");
+    throw this.assertionError(shouldContainOnly(this.actual, entries, notFound, notExpected, groupTypeDescription));
   }
 
   /**

@@ -9,6 +9,7 @@ import static org.assertj.core.error.ShouldContainKeys.shouldContainKeys;
 import static org.assertj.core.error.ShouldContainOnly.shouldContainOnly;
 import static org.assertj.core.error.ShouldContainValue.shouldContainValue;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
+import static org.assertj.core.error.ShouldHaveSizeGreaterThan.shouldHaveSizeGreaterThan;
 import static org.assertj.core.error.ShouldHaveSizeLessThan.shouldHaveSizeLessThan;
 import static org.assertj.core.error.ShouldHaveSizeLessThanOrEqualTo.shouldHaveSizeLessThanOrEqualTo;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
@@ -237,6 +238,34 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
       return this.myself;
     }
     throw this.assertionError(shouldHaveSize(this.actual, actualSize, expected));
+  }
+
+  /**
+   * Verifies that the number of key-value entry pairs in the {@link Multimap} is greater than the specified boundary.
+   * <p>
+   * Example:
+   * <pre>{@code
+   * Multimap<String, String> multimap = Multimaps.mutable.list.with("Key1", "Value1", "Key1", "Value2", "Key2", "Value3");
+   *
+   * // assertion will pass
+   * assertThat(multimap).hasSizeGreaterThan(1);
+   *
+   * // assertions will fail
+   * assertThat(multimap).hasSizeGreaterThan(3);
+   * assertThat(multimap).hasSizeGreaterThan(4);
+   * }</pre>
+   *
+   * @param boundary the size that the actual number of key-value pairs should exceed.
+   * @return {@code this} assertion object.
+   * @throws AssertionError if the actual size of the {@link Multimap} is not greater than the specified boundary.
+   */
+  public SELF hasSizeGreaterThan(int boundary) {
+    this.isNotNull();
+    int actualSize = this.actual.size();
+    if (actualSize > boundary) {
+      return this.myself;
+    }
+    throw this.assertionError(shouldHaveSizeGreaterThan(this.actual, actualSize, boundary));
   }
 
   /**

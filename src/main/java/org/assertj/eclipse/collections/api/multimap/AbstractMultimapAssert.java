@@ -8,6 +8,7 @@ import static org.assertj.core.error.ShouldContainKey.shouldContainKey;
 import static org.assertj.core.error.ShouldContainKeys.shouldContainKeys;
 import static org.assertj.core.error.ShouldContainValue.shouldContainValue;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
+import static org.assertj.core.error.ShouldHaveSizeLessThan.shouldHaveSizeLessThan;
 import static org.assertj.core.error.ShouldHaveSizeLessThanOrEqualTo.shouldHaveSizeLessThanOrEqualTo;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 import static org.assertj.eclipse.collections.error.ShouldHaveDistinctSize.shouldHaveDistinctSize;
@@ -187,6 +188,34 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
       return this.myself;
     }
     throw this.assertionError(shouldHaveSize(this.actual, actualSize, expected));
+  }
+
+  /**
+   * Verifies that the number of key-value entry pairs in the {@link Multimap} is less than the boundary.
+   * <p>
+   * Example:
+   * <pre>{@code
+   * Multimap<String, String> multimap = Multimaps.mutable.list.with("Key1", "Value1", "Key2", "Value2");
+   *
+   * // assertion will pass
+   * assertThat(multimap).hasSizeLessThan(3);
+   *
+   * // assertions will fail
+   * assertThat(multimap).hasSizeLessThan(1);
+   * assertThat(multimap).hasSizeLessThan(2);
+   * }</pre>
+   *
+   * @param boundary the maximum size (exclusive) the {@link Multimap} should have.
+   * @return {@code this} assertion object.
+   * @throws AssertionError if the actual size of the {@link Multimap} is not less than the expected size.
+   */
+  public SELF hasSizeLessThan(int boundary) {
+    this.isNotNull();
+    int actualSize = this.actual.size();
+    if (actualSize < boundary) {
+      return this.myself;
+    }
+    throw this.assertionError(shouldHaveSizeLessThan(this.actual, actualSize, boundary));
   }
 
   /**

@@ -17,6 +17,12 @@ import org.eclipse.collections.api.multimap.bag.BagMultimap;
 
 public class BagMultimapAssert<KEY, VALUE> extends AbstractMultimapAssert<BagMultimapAssert<KEY, VALUE>, BagMultimap<KEY, VALUE>, KEY, VALUE> {
 
+  /**
+   * Creates a new instance of {@link BagMultimapAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
   public static <KEY, VALUE> BagMultimapAssert<KEY, VALUE> assertThat(BagMultimap<KEY, VALUE> actual) {
     return new BagMultimapAssert<>(actual);
   }

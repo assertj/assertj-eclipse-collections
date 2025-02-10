@@ -18,6 +18,12 @@ import org.eclipse.collections.api.multimap.list.ListMultimap;
 public class ListMultimapAssert<KEY, VALUE>
   extends AbstractMultimapAssert<ListMultimapAssert<KEY, VALUE>, ListMultimap<KEY, VALUE>, KEY, VALUE> {
 
+  /**
+   * Creates a new instance of {@link ListMultimapAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
   public static <KEY, VALUE> ListMultimapAssert<KEY, VALUE> assertThat(ListMultimap<KEY, VALUE> actual) {
     return new ListMultimapAssert<>(actual);
   }

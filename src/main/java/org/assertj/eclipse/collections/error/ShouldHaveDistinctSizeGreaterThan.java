@@ -12,12 +12,23 @@
  */
 package org.assertj.eclipse.collections.error;
 
+import static java.lang.String.format;
+
 import org.assertj.core.error.BasicErrorMessageFactory;
 import org.assertj.core.error.ErrorMessageFactory;
 
-import static java.lang.String.format;
-
+/**
+ * Creates an error message indicating that an assertion that verifies a minimum distinct size failed.
+ */
 public class ShouldHaveDistinctSizeGreaterThan extends BasicErrorMessageFactory {
+  /**
+   * Creates a new {@link ShouldHaveDistinctSizeGreaterThan}.
+   *
+   * @param actual          the actual value in the failed assertion.
+   * @param actualSize      the size of {@code actual}.
+   * @param expectedMinSize the expected size.
+   * @return the created {@code ErrorMessageFactory}.
+   */
   public static ErrorMessageFactory shouldHaveDistinctSizeGreaterThan(Object actual, int actualSize, int expectedMinSize) {
     return new ShouldHaveDistinctSizeGreaterThan(actual, actualSize, expectedMinSize);
   }

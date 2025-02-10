@@ -21,12 +21,12 @@ import org.eclipse.collections.api.multimap.list.ListMultimap;
 import org.eclipse.collections.api.multimap.set.SetMultimap;
 
 /**
- * Entry point for assertion methods for the Eclipse Collections library. Each method in this class is a static factory
- * for a type-specific assertion object.
+ * Behavior-driven development style entry point for assertion methods for the Eclipse Collections library. Each method
+ * in this class is a static factory for a type-specific assertion object.
  */
 @CheckReturnValue
-public class Assertions {
-  protected Assertions() {
+public class BDDAssertions extends Assertions {
+  protected BDDAssertions() {
     // Do nothing
   }
 
@@ -36,8 +36,8 @@ public class Assertions {
    * @param actual the actual value.
    * @return the created assertion object.
    */
-  public static <KEY, VALUE> BagMultimapAssert<KEY, VALUE> assertThat(BagMultimap<KEY, VALUE> actual) {
-    return BagMultimapAssert.assertThat(actual);
+  public static <KEY, VALUE> BagMultimapAssert<KEY, VALUE> then(BagMultimap<KEY, VALUE> actual) {
+    return assertThat(actual);
   }
 
   /**
@@ -46,8 +46,8 @@ public class Assertions {
    * @param actual the actual value.
    * @return the created assertion object.
    */
-  public static <KEY, VALUE> ListMultimapAssert<KEY, VALUE> assertThat(ListMultimap<KEY, VALUE> actual) {
-    return ListMultimapAssert.assertThat(actual);
+  public static <KEY, VALUE> ListMultimapAssert<KEY, VALUE> then(ListMultimap<KEY, VALUE> actual) {
+    return assertThat(actual);
   }
 
   /**
@@ -56,7 +56,7 @@ public class Assertions {
    * @param actual the actual value.
    * @return the created assertion object.
    */
-  public static <KEY, VALUE> SetMultimapAssert<KEY, VALUE> assertThat(SetMultimap<KEY, VALUE> actual) {
-    return SetMultimapAssert.assertThat(actual);
+  public static <KEY, VALUE> SetMultimapAssert<KEY, VALUE> then(SetMultimap<KEY, VALUE> actual) {
+    return assertThat(actual);
   }
 }

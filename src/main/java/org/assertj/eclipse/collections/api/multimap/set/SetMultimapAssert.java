@@ -17,6 +17,12 @@ import org.eclipse.collections.api.multimap.set.SetMultimap;
 
 public class SetMultimapAssert<KEY, VALUE> extends AbstractMultimapAssert<SetMultimapAssert<KEY, VALUE>, SetMultimap<KEY, VALUE>, KEY, VALUE> {
 
+  /**
+   * Creates a new instance of {@link SetMultimapAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
   public static <KEY, VALUE> SetMultimapAssert<KEY, VALUE> assertThat(SetMultimap<KEY, VALUE> actual) {
     return new SetMultimapAssert<>(actual);
   }

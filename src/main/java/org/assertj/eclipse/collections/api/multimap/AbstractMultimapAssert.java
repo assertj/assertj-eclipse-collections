@@ -159,8 +159,7 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
    */
   @SafeVarargs
   public final SELF containsOnly(Map.Entry<? extends KEY, ? extends VALUE>... entries) {
-    @SuppressWarnings("unchecked")
-    Pair<KEY, VALUE>[] pairs = ArrayAdapter.adapt(entries).collect(Tuples::pairFrom).toArray(new Pair[entries.length]);
+    MutableList<Pair<? extends KEY, ? extends VALUE>> pairs = Lists.mutable.of(entries).collect(Tuples::pairFrom);
     return this.containsOnlyForProxy(pairs);
   }
 
@@ -173,13 +172,12 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
    */
   @SafeVarargs
   public final SELF containsOnly(Pair<? extends KEY, ? extends VALUE>... entries) {
-    return this.containsOnlyForProxy(entries);
+    return this.containsOnlyForProxy(Lists.mutable.of(entries));
   }
 
-  protected SELF containsOnlyForProxy(Pair<? extends KEY, ? extends VALUE>[] entries) {
+  protected SELF containsOnlyForProxy(MutableList<Pair<? extends KEY, ? extends VALUE>> entries) {
     this.isNotNull();
-    PartitionMutableList<Pair<? extends KEY, ? extends VALUE>> partition = ArrayAdapter
-      .adapt(entries)
+    PartitionMutableList<Pair<? extends KEY, ? extends VALUE>> partition = entries
       .partition(entry -> this.actual.containsKeyAndValue(entry.getOne(), entry.getTwo()));
 
     MutableList<Pair<? extends KEY, ? extends VALUE>> found = partition.getSelected();

@@ -19,7 +19,7 @@ import org.eclipse.collections.api.multimap.bag.BagMultimap;
 import org.eclipse.collections.api.multimap.bag.MutableBagMultimap;
 import org.eclipse.collections.impl.factory.Multimaps;
 
-public class BagMultimapAssert_HasDistinctSizeGreaterThan_Test implements AbstractMultimapAssert_HasDistinctSizeGreaterThan_Contract<String, String, BagMultimap<String, String>, BagMultimapAssert<String, String>> {
+class BagMultimapAssert_HasDistinctSizeGreaterThan_Test implements AbstractMultimapAssert_HasDistinctSizeGreaterThan_Contract<String, String, BagMultimap<String, String>, BagMultimapAssert<String, String>> {
   @Override
   public BagMultimap<String, String> testInput() {
     MutableBagMultimap<String, String> multimap = Multimaps.mutable.bag.of();

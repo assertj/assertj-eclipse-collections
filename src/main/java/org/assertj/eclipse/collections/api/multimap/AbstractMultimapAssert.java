@@ -30,6 +30,7 @@ import static org.assertj.core.error.ShouldHaveSizeLessThanOrEqualTo.shouldHaveS
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 import static org.assertj.eclipse.collections.error.ShouldHaveDistinctSize.shouldHaveDistinctSize;
 import static org.assertj.eclipse.collections.error.ShouldHaveDistinctSizeGreaterThan.shouldHaveDistinctSizeGreaterThan;
+import static org.assertj.eclipse.collections.error.ShouldHaveDistinctSizeGreaterThanOrEqualTo.shouldHaveDistinctSizeGreaterThanOrEqualTo;
 
 import java.util.Map;
 
@@ -226,10 +227,10 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
   }
 
   /**
-   * Verifies that the number of distinct keys in the {@link Multimap} is greater than the specified boundary.
+   * Verifies that the distinct size of the {@link Multimap} is greater than the specified boundary.
    *
    * @param boundary the size that the actual number of distinct keys should exceed.
-   * @return {@code this} assertion object for method chaining.
+   * @return this assertion object for method chaining.
    * @throws AssertionError if the actual distinct size of the {@link Multimap} is not greater than the specified boundary.
    */
   public SELF hasDistinctSizeGreaterThan(int boundary) {
@@ -239,6 +240,22 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
       return this.myself;
     }
     throw this.assertionError(shouldHaveDistinctSizeGreaterThan(this.actual, actualSize, boundary));
+  }
+
+  /**
+   * Verifies that the distinct size of the {@link Multimap} is greater than or equal to the specified boundary.
+   *
+   * @param boundary the minimum distinct size to compare the Multimap against
+   * @return this assertion for method chaining
+   * @throws AssertionError if the distinct size of the collection is less than the specified boundary
+   */
+  public SELF hasDistinctSizeGreaterThanOrEqualTo(int boundary) {
+    this.isNotNull();
+    int actualSize = this.actual.sizeDistinct();
+    if (actualSize >= boundary) {
+      return this.myself;
+    }
+    throw this.assertionError(shouldHaveDistinctSizeGreaterThanOrEqualTo(this.actual, actualSize, boundary));
   }
 
   /**

@@ -23,14 +23,35 @@ import org.eclipse.collections.api.multimap.set.SetMultimap;
 
 @CheckReturnValue
 public interface EclipseCollectionsSoftAssertionsProvider extends SoftAssertionsProvider {
+  /**
+   * Creates a new, proxied instance of a {@link BagMultimapAssert}
+   *
+   * @param actual the path
+   * @return the created assertion object
+   */
+  @SuppressWarnings("unchecked")
   default <KEY, VALUE> BagMultimapAssert<KEY, VALUE> assertThat(BagMultimap<KEY, VALUE> actual) {
     return this.proxy(BagMultimapAssert.class, BagMultimap.class, actual);
   }
 
+  /**
+   * Creates a new, proxied instance of a {@link ListMultimapAssert}
+   *
+   * @param actual the path
+   * @return the created assertion object
+   */
+  @SuppressWarnings("unchecked")
   default <KEY, VALUE> ListMultimapAssert<KEY, VALUE> assertThat(ListMultimap<KEY, VALUE> actual) {
     return this.proxy(ListMultimapAssert.class, ListMultimap.class, actual);
   }
 
+  /**
+   * Creates a new, proxied instance of a {@link SetMultimapAssert}
+   *
+   * @param actual the path
+   * @return the created assertion object
+   */
+  @SuppressWarnings("unchecked")
   default <KEY, VALUE> SetMultimapAssert<KEY, VALUE> assertThat(SetMultimap<KEY, VALUE> actual) {
     return this.proxy(SetMultimapAssert.class, SetMultimap.class, actual);
   }

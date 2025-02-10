@@ -19,7 +19,7 @@ import org.eclipse.collections.api.multimap.list.ListMultimap;
 import org.eclipse.collections.api.multimap.list.MutableListMultimap;
 import org.eclipse.collections.impl.factory.Multimaps;
 
-public class ListMultimapAssert_HasDistinctSizeGreaterThan_Test implements AbstractMultimapAssert_HasDistinctSizeGreaterThan_Contract<String, String, ListMultimap<String, String>, ListMultimapAssert<String, String>> {
+class ListMultimapAssert_HasDistinctSizeGreaterThan_Test implements AbstractMultimapAssert_HasDistinctSizeGreaterThan_Contract<String, String, ListMultimap<String, String>, ListMultimapAssert<String, String>> {
   @Override
   public ListMultimap<String, String> testInput() {
     MutableListMultimap<String, String> multimap = Multimaps.mutable.list.of();

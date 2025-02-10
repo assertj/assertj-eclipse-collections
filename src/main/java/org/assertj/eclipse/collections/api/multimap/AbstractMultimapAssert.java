@@ -22,6 +22,7 @@ import static org.assertj.core.error.ShouldContainOnly.shouldContainOnly;
 import static org.assertj.core.error.ShouldContainValue.shouldContainValue;
 import static org.assertj.core.error.ShouldContainValues.shouldContainValues;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
+import static org.assertj.core.error.ShouldHaveSizeBetween.shouldHaveSizeBetween;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThan.shouldHaveSizeGreaterThan;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThanOrEqualTo.shouldHaveSizeGreaterThanOrEqualTo;
 import static org.assertj.core.error.ShouldHaveSizeLessThan.shouldHaveSizeLessThan;
@@ -285,6 +286,36 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
       return this.myself;
     }
     throw this.assertionError(shouldHaveSize(this.actual, actualSize, expected));
+  }
+
+  /**
+   * Verifies that the number of key-value entry pairs in the {@link Multimap} is between the given boundaries
+   * (inclusive).
+   * <p>
+   * Example:
+   * <pre>{@code
+   * Multimap<String, String> multimap = Multimaps.mutable.list.with("Key1", "Value1", "Key1", "Value2", "Key2", "Value3");
+   *
+   * // assertion will pass
+   * assertThat(multimap).hasSizeBetween(1, 4)
+   *                     .hasSizeBetween(2, 3);
+   *
+   * // assertions will fail
+   * assertThat(multimap).hasSizeBetween(4, 5);
+   * }</pre>
+   *
+   * @param lowerBoundary  the lower boundary compared to which actual size should be greater than or equal to.
+   * @param higherBoundary the higher boundary compared to which actual size should be less than or equal to.
+   * @return {@code this} assertion object.
+   * @throws AssertionError if the actual size of the {@link Multimap} is not between the given boundaries.
+   */
+  public SELF hasSizeBetween(int lowerBoundary, int higherBoundary) {
+    this.isNotNull();
+    int actualSize = this.actual.size();
+    if (actualSize >= lowerBoundary && actualSize <= higherBoundary) {
+      return this.myself;
+    }
+    throw this.assertionError(shouldHaveSizeBetween(this.actual, actualSize, lowerBoundary, higherBoundary));
   }
 
   /**

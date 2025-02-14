@@ -12,9 +12,20 @@
  */
 package org.assertj.eclipse.collections.api.multimap.bag;
 
+import org.assertj.eclipse.collections.api.Assertions;
 import org.assertj.eclipse.collections.api.multimap.AbstractMultimapAssert;
+import org.assertj.eclipse.collections.api.multimap.set.SetMultimapAssert;
 import org.eclipse.collections.api.multimap.bag.BagMultimap;
 
+/**
+ * Assertion methods for {@link BagMultimap}s.
+ * <p>
+ * To create an instance of this class, invoke <code>{@link Assertions#assertThat(BagMultimap)}</code>.
+ * </p>
+ *
+ * @param <KEY>   the type of keys in the BagMultimap.
+ * @param <VALUE> the type of values in the BagMultimap.
+ */
 public class BagMultimapAssert<KEY, VALUE> extends AbstractMultimapAssert<BagMultimapAssert<KEY, VALUE>, BagMultimap<KEY, VALUE>, KEY, VALUE> {
 
   /**
@@ -22,12 +33,17 @@ public class BagMultimapAssert<KEY, VALUE> extends AbstractMultimapAssert<BagMul
    *
    * @param actual the actual value.
    * @return the created assertion object.
+   * @param <KEY> The type of keys in the actual BagMultimap
+   * @param <VALUE> The type of values in the actual BagMultimap
    */
   public static <KEY, VALUE> BagMultimapAssert<KEY, VALUE> assertThat(BagMultimap<KEY, VALUE> actual) {
     return new BagMultimapAssert<>(actual);
   }
 
-  public BagMultimapAssert(BagMultimap<KEY, VALUE> keyvalueBagMultimap) {
-    super(keyvalueBagMultimap, BagMultimapAssert.class);
+  /**
+   * Creates a new {@link BagMultimapAssert}.
+   */
+  public BagMultimapAssert(BagMultimap<KEY, VALUE> actual) {
+    super(actual, BagMultimapAssert.class);
   }
 }

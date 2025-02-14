@@ -26,6 +26,9 @@ import org.eclipse.collections.api.multimap.set.SetMultimap;
  */
 @CheckReturnValue
 public class BDDAssertions extends Assertions {
+  /**
+   * Creates a new <code>{@link BDDAssertions}</code>.
+   */
   protected BDDAssertions() {
     // Do nothing
   }
@@ -35,6 +38,8 @@ public class BDDAssertions extends Assertions {
    *
    * @param actual the actual value.
    * @return the created assertion object.
+   * @param <KEY> The type of keys in the BagMultimap
+   * @param <VALUE> The type of values in the BagMultimap
    */
   public static <KEY, VALUE> BagMultimapAssert<KEY, VALUE> then(BagMultimap<KEY, VALUE> actual) {
     return assertThat(actual);
@@ -45,6 +50,8 @@ public class BDDAssertions extends Assertions {
    *
    * @param actual the actual value.
    * @return the created assertion object.
+   * @param <KEY> The type of keys in the ListMultimap
+   * @param <VALUE> The type of values in the ListMultimap
    */
   public static <KEY, VALUE> ListMultimapAssert<KEY, VALUE> then(ListMultimap<KEY, VALUE> actual) {
     return assertThat(actual);
@@ -55,6 +62,8 @@ public class BDDAssertions extends Assertions {
    *
    * @param actual the actual value.
    * @return the created assertion object.
+   * @param <KEY> The type of keys in the SetMultimap
+   * @param <VALUE> The type of values in the SetMultimap
    */
   public static <KEY, VALUE> SetMultimapAssert<KEY, VALUE> then(SetMultimap<KEY, VALUE> actual) {
     return assertThat(actual);

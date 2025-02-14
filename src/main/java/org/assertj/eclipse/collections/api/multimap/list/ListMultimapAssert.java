@@ -12,9 +12,19 @@
  */
 package org.assertj.eclipse.collections.api.multimap.list;
 
+import org.assertj.eclipse.collections.api.Assertions;
 import org.assertj.eclipse.collections.api.multimap.AbstractMultimapAssert;
 import org.eclipse.collections.api.multimap.list.ListMultimap;
 
+/**
+ * Assertion methods for {@link ListMultimap}s.
+ * <p>
+ * To create an instance of this class, invoke <code>{@link Assertions#assertThat(ListMultimap)}</code>.
+ * </p>
+ *
+ * @param <KEY>    the type of keys in the ListMultimap.
+ * @param <VALUE>  the type of values in the ListMultimap.
+ */
 public class ListMultimapAssert<KEY, VALUE>
   extends AbstractMultimapAssert<ListMultimapAssert<KEY, VALUE>, ListMultimap<KEY, VALUE>, KEY, VALUE> {
 
@@ -23,11 +33,16 @@ public class ListMultimapAssert<KEY, VALUE>
    *
    * @param actual the actual value.
    * @return the created assertion object.
+   * @param <KEY> The type of keys in th actual ListMultimap
+   * @param <VALUE> The type of values in the actual ListMultimap
    */
   public static <KEY, VALUE> ListMultimapAssert<KEY, VALUE> assertThat(ListMultimap<KEY, VALUE> actual) {
     return new ListMultimapAssert<>(actual);
   }
 
+  /**
+   * Creates a new {@link ListMultimapAssert}.
+   */
   public ListMultimapAssert(ListMultimap<KEY, VALUE> actual) {
     super(actual, ListMultimapAssert.class);
   }

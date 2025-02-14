@@ -14,7 +14,6 @@ package org.assertj.eclipse.collections.api.multimap.bag;
 
 import org.assertj.eclipse.collections.api.Assertions;
 import org.assertj.eclipse.collections.api.multimap.AbstractMultimapAssert;
-import org.assertj.eclipse.collections.api.multimap.set.SetMultimapAssert;
 import org.eclipse.collections.api.multimap.bag.BagMultimap;
 
 /**
@@ -42,6 +41,7 @@ public class BagMultimapAssert<KEY, VALUE> extends AbstractMultimapAssert<BagMul
 
   /**
    * Creates a new {@link BagMultimapAssert}.
+   * @param actual The actual value to assert against
    */
   public BagMultimapAssert(BagMultimap<KEY, VALUE> actual) {
     super(actual, BagMultimapAssert.class);

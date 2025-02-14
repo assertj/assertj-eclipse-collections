@@ -43,7 +43,6 @@ import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.multimap.Multimap;
 import org.eclipse.collections.api.partition.list.PartitionMutableList;
 import org.eclipse.collections.api.tuple.Pair;
-import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
 import org.eclipse.collections.impl.tuple.Tuples;
 
 /**
@@ -57,6 +56,11 @@ import org.eclipse.collections.impl.tuple.Tuples;
 public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert<SELF, ACTUAL, KEY, VALUE>, ACTUAL extends Multimap<KEY, VALUE>, KEY, VALUE>
   extends AbstractObjectAssert<SELF, ACTUAL> {
 
+  /**
+   * Creates a new {@link AbstractMultimapAssert}.
+   * @param actual The actual Multimap to assert against
+   * @param selfType The "self" type of child assert class
+   */
   protected AbstractMultimapAssert(ACTUAL actual, Class<?> selfType) {
     super(actual, selfType);
   }
@@ -99,6 +103,13 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
     return this.containsForProxy(pairs);
   }
 
+  /**
+   * Verifies that the actual {@code Multimap} contains the provided entries.
+   *
+   * @param entries the list of entries that are expected to be contained within the {@code Multimap}.
+   * @return this assertion object for method chaining.
+   * @throws AssertionError if the actual {@code Multimap} does not contain one or more of the specified entries.
+   */
   protected SELF containsForProxy(MutableList<Pair<KEY, VALUE>> entries) {
     this.isNotNull();
     MutableList<Pair<KEY, VALUE>> entriesNotFound = entries
@@ -175,6 +186,13 @@ public abstract class AbstractMultimapAssert<SELF extends AbstractMultimapAssert
     return this.containsOnlyForProxy(Lists.mutable.of(entries));
   }
 
+  /**
+   * Verifies that the current object contains only the specified list of pairs of key-value entries.
+   *
+   * @param entries the list of pairs of key-value entries to check against
+   * @return this assertion object for method chaining
+   * @throws AssertionError if the actual {@link Multimap} does not contain only the given entries.
+   */
   protected SELF containsOnlyForProxy(MutableList<Pair<? extends KEY, ? extends VALUE>> entries) {
     this.isNotNull();
     PartitionMutableList<Pair<? extends KEY, ? extends VALUE>> partition = entries

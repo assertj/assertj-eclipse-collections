@@ -21,6 +21,9 @@ import org.eclipse.collections.api.multimap.bag.BagMultimap;
 import org.eclipse.collections.api.multimap.list.ListMultimap;
 import org.eclipse.collections.api.multimap.set.SetMultimap;
 
+/**
+ * Soft assertions implementations for Eclipse Collections types.
+ */
 @CheckReturnValue
 public interface EclipseCollectionsSoftAssertionsProvider extends SoftAssertionsProvider {
   /**
@@ -28,6 +31,8 @@ public interface EclipseCollectionsSoftAssertionsProvider extends SoftAssertions
    *
    * @param actual the path
    * @return the created assertion object
+   * @param <KEY> The type of keys in the actual BagMultimap
+   * @param <VALUE> The type of values in the actual BagMultimap
    */
   @SuppressWarnings("unchecked")
   default <KEY, VALUE> BagMultimapAssert<KEY, VALUE> assertThat(BagMultimap<KEY, VALUE> actual) {
@@ -39,6 +44,8 @@ public interface EclipseCollectionsSoftAssertionsProvider extends SoftAssertions
    *
    * @param actual the path
    * @return the created assertion object
+   * @param <KEY> The type of keys in the actual ListMultimap
+   * @param <VALUE> The type of values in the actual ListMultimap
    */
   @SuppressWarnings("unchecked")
   default <KEY, VALUE> ListMultimapAssert<KEY, VALUE> assertThat(ListMultimap<KEY, VALUE> actual) {
@@ -50,6 +57,8 @@ public interface EclipseCollectionsSoftAssertionsProvider extends SoftAssertions
    *
    * @param actual the path
    * @return the created assertion object
+   * @param <KEY> The type of keys in the actual SetMultimap
+   * @param <VALUE> The type of values in the actual SetMultimap
    */
   @SuppressWarnings("unchecked")
   default <KEY, VALUE> SetMultimapAssert<KEY, VALUE> assertThat(SetMultimap<KEY, VALUE> actual) {

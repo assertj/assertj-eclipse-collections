@@ -42,6 +42,7 @@ public class ListMultimapAssert<KEY, VALUE>
 
   /**
    * Creates a new {@link ListMultimapAssert}.
+   * @param actual The actual value to assert against
    */
   public ListMultimapAssert(ListMultimap<KEY, VALUE> actual) {
     super(actual, ListMultimapAssert.class);

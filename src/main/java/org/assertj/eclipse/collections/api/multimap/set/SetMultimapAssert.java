@@ -41,6 +41,7 @@ public class SetMultimapAssert<KEY, VALUE> extends AbstractMultimapAssert<SetMul
 
   /**
    * Creates a new {@link SetMultimapAssert}.
+   * @param actual The actual value to assert against
    */
   public SetMultimapAssert(SetMultimap<KEY, VALUE> actual) {
     super(actual, SetMultimapAssert.class);

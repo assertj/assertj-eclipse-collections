@@ -18,7 +18,7 @@ import org.assertj.core.error.ErrorMessageFactory;
 import static java.lang.String.format;
 
 /**
- * Creates an error message indicating that an assertion that verifies that a value have certain distinct size failed.
+ * Creates an error message indicating that an assertion that verifies that a value has certain distinct size failed.
  */
 public class ShouldHaveDistinctSize extends BasicErrorMessageFactory {
   /**

@@ -14,12 +14,8 @@ package org.assertj.eclipse.collections.api;
 
 import org.assertj.core.api.SoftAssertionsProvider;
 import org.assertj.core.util.CheckReturnValue;
-import org.assertj.eclipse.collections.api.multimap.bag.BagMultimapAssert;
-import org.assertj.eclipse.collections.api.multimap.list.ListMultimapAssert;
-import org.assertj.eclipse.collections.api.multimap.set.SetMultimapAssert;
-import org.eclipse.collections.api.multimap.bag.BagMultimap;
-import org.eclipse.collections.api.multimap.list.ListMultimap;
-import org.eclipse.collections.api.multimap.set.SetMultimap;
+import org.assertj.eclipse.collections.api.multimap.MultimapAssert;
+import org.eclipse.collections.api.multimap.Multimap;
 
 /**
  * Soft assertions implementations for Eclipse Collections types.
@@ -27,7 +23,7 @@ import org.eclipse.collections.api.multimap.set.SetMultimap;
 @CheckReturnValue
 public interface EclipseCollectionsSoftAssertionsProvider extends SoftAssertionsProvider {
   /**
-   * Creates a new, proxied instance of a {@link BagMultimapAssert}
+   * Creates a new, proxied instance of a {@link MultimapAssert}
    *
    * @param actual the path
    * @return the created assertion object
@@ -35,33 +31,7 @@ public interface EclipseCollectionsSoftAssertionsProvider extends SoftAssertions
    * @param <VALUE> The type of values in the actual BagMultimap
    */
   @SuppressWarnings("unchecked")
-  default <KEY, VALUE> BagMultimapAssert<KEY, VALUE> assertThat(BagMultimap<KEY, VALUE> actual) {
-    return this.proxy(BagMultimapAssert.class, BagMultimap.class, actual);
-  }
-
-  /**
-   * Creates a new, proxied instance of a {@link ListMultimapAssert}
-   *
-   * @param actual the path
-   * @return the created assertion object
-   * @param <KEY> The type of keys in the actual ListMultimap
-   * @param <VALUE> The type of values in the actual ListMultimap
-   */
-  @SuppressWarnings("unchecked")
-  default <KEY, VALUE> ListMultimapAssert<KEY, VALUE> assertThat(ListMultimap<KEY, VALUE> actual) {
-    return this.proxy(ListMultimapAssert.class, ListMultimap.class, actual);
-  }
-
-  /**
-   * Creates a new, proxied instance of a {@link SetMultimapAssert}
-   *
-   * @param actual the path
-   * @return the created assertion object
-   * @param <KEY> The type of keys in the actual SetMultimap
-   * @param <VALUE> The type of values in the actual SetMultimap
-   */
-  @SuppressWarnings("unchecked")
-  default <KEY, VALUE> SetMultimapAssert<KEY, VALUE> assertThat(SetMultimap<KEY, VALUE> actual) {
-    return this.proxy(SetMultimapAssert.class, SetMultimap.class, actual);
+  default <KEY, VALUE> MultimapAssert<KEY, VALUE> assertThat(Multimap<KEY, VALUE> actual) {
+    return this.proxy(MultimapAssert.class, Multimap.class, actual);
   }
 }

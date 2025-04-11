@@ -13,12 +13,8 @@
 package org.assertj.eclipse.collections.api;
 
 import org.assertj.core.util.CheckReturnValue;
-import org.assertj.eclipse.collections.api.multimap.bag.BagMultimapAssert;
-import org.assertj.eclipse.collections.api.multimap.list.ListMultimapAssert;
-import org.assertj.eclipse.collections.api.multimap.set.SetMultimapAssert;
-import org.eclipse.collections.api.multimap.bag.BagMultimap;
-import org.eclipse.collections.api.multimap.list.ListMultimap;
-import org.eclipse.collections.api.multimap.set.SetMultimap;
+import org.assertj.eclipse.collections.api.multimap.MultimapAssert;
+import org.eclipse.collections.api.multimap.Multimap;
 
 /**
  * Behavior-driven development style entry point for assertion methods for the Eclipse Collections library. Each method
@@ -34,38 +30,14 @@ public class BDDAssertions extends Assertions {
   }
 
   /**
-   * Creates a new instance of {@link BagMultimapAssert}.
+   * Creates a new instance of {@link MultimapAssert}.
    *
    * @param actual the actual value.
    * @return the created assertion object.
    * @param <KEY> The type of keys in the BagMultimap
    * @param <VALUE> The type of values in the BagMultimap
    */
-  public static <KEY, VALUE> BagMultimapAssert<KEY, VALUE> then(BagMultimap<KEY, VALUE> actual) {
-    return assertThat(actual);
-  }
-
-  /**
-   * Creates a new instance of {@link ListMultimapAssert}.
-   *
-   * @param actual the actual value.
-   * @return the created assertion object.
-   * @param <KEY> The type of keys in the ListMultimap
-   * @param <VALUE> The type of values in the ListMultimap
-   */
-  public static <KEY, VALUE> ListMultimapAssert<KEY, VALUE> then(ListMultimap<KEY, VALUE> actual) {
-    return assertThat(actual);
-  }
-
-  /**
-   * Creates a new instance of {@link SetMultimapAssert}.
-   *
-   * @param actual the actual value.
-   * @return the created assertion object.
-   * @param <KEY> The type of keys in the SetMultimap
-   * @param <VALUE> The type of values in the SetMultimap
-   */
-  public static <KEY, VALUE> SetMultimapAssert<KEY, VALUE> then(SetMultimap<KEY, VALUE> actual) {
+  public static <KEY, VALUE> MultimapAssert<KEY, VALUE> then(Multimap<KEY, VALUE> actual) {
     return assertThat(actual);
   }
 }

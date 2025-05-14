@@ -24,8 +24,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class MultimapAssert_HasKeySatisfying_Test {
 
-  private static final Condition<Object> PASSING_CONDITION = new Condition<>(value -> "DS9".equals(value), "key equals DS9");
-  private static final Condition<Object> FAILING_CONDITION = new Condition<>(value -> "DIS".equals(value), "key equals DIS");
+  private static final Condition<Object> PASSING_CONDITION = new Condition<>("DS9"::equals, "key equals DS9");
+  private static final Condition<Object> FAILING_CONDITION = new Condition<>("DIS"::equals, "key equals DIS");
 
   @ParameterizedTest
   @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#nonEmptyMultimaps")

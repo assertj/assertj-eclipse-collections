@@ -39,6 +39,7 @@
 
   <properties>
     <assertj.version>3.27.3</assertj.version>
+    <java.version>11</java.version>
     <eclipse-collections.version>13.0.0</eclipse-collections.version>
     <!-- Dependency versions overriding -->
     <junit-jupiter.version>5.12.1</junit-jupiter.version>

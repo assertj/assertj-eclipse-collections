@@ -23,6 +23,14 @@
     </license>
   </licenses>
 
+  <developers>
+    <developer>
+      <id>mattbertolini</id>
+      <name>Matt Bertolini</name>
+      <url>https://github.com/mattbertolini</url>
+    </developer>
+  </developers>
+
   <scm>
     <connection>scm:git:https://github.com/assertj/assertj-eclipse-collections.git</connection>
     <developerConnection>scm:git:https://github.com/assertj/assertj-eclipse-collections.git</developerConnection>
@@ -31,9 +39,10 @@
 
   <properties>
     <assertj.version>3.27.3</assertj.version>
+    <java.version>11</java.version>
     <eclipse-collections.version>12.0.0</eclipse-collections.version>
     <!-- Dependency versions overriding -->
-    <junit-jupiter.version>5.11.4</junit-jupiter.version>
+    <junit-jupiter.version>5.12.1</junit-jupiter.version>
   </properties>
 
   <dependencies>
@@ -46,9 +55,15 @@
     <!-- Provided -->
     <dependency>
       <groupId>org.eclipse.collections</groupId>
-      <artifactId>eclipse-collections-api</artifactId>
+      <artifactId>eclipse-collections</artifactId>
       <version>${eclipse-collections.version}</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.opentest4j</groupId>
+      <artifactId>opentest4j</artifactId>
+      <scope>provided</scope>
+      <optional>true</optional>
     </dependency>
     <!-- Test -->
     <dependency>

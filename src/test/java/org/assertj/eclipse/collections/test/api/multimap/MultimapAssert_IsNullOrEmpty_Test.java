@@ -10,12 +10,13 @@
  *
  * Copyright 2025-2025 the original author or authors.
  */
-package org.assertj.eclipse.collections.api.multimap;
+package org.assertj.eclipse.collections.test.api.multimap;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import org.assertj.eclipse.collections.api.SoftAssertions;
+import org.assertj.eclipse.collections.api.multimap.MultimapAssert;
 import org.eclipse.collections.api.multimap.Multimap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,7 +25,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 class MultimapAssert_IsNullOrEmpty_Test {
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#emptyMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#emptyMultimaps")
   void passesEmptyMultimap(Multimap<String, String> actual) {
     assertThatNoException().isThrownBy(() -> new MultimapAssert<>(actual).isNullOrEmpty());
   }
@@ -35,7 +36,7 @@ class MultimapAssert_IsNullOrEmpty_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#nonEmptyMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#nonEmptyMultimaps")
   void failsNotNullOrEmpty(Multimap<String, String> actual) {
     assertThatExceptionOfType(AssertionError.class)
       .isThrownBy(() -> new MultimapAssert<>(actual).isNullOrEmpty())
@@ -43,7 +44,7 @@ class MultimapAssert_IsNullOrEmpty_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#emptyMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#emptyMultimaps")
   void softAssertionPassesEmpty(Multimap<String, String> actual) {
     SoftAssertions.assertSoftly(softly -> softly.assertThat(actual).isNullOrEmpty());
   }

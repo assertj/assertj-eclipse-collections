@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.assertj</groupId>
     <artifactId>assertj-parent</artifactId>
-    <version>3.27.3</version>
+    <version>4.0.0-M1</version>
   </parent>
 
   <artifactId>assertj-eclipse-collections</artifactId>
@@ -38,8 +38,8 @@
   </scm>
 
   <properties>
-    <assertj.version>3.27.3</assertj.version>
-    <java.version>11</java.version>
+    <assertj.version>4.0.0-M1</assertj.version>
+    <java.version>17</java.version>
     <eclipse-collections.version>13.0.0</eclipse-collections.version>
     <!-- Dependency versions overriding -->
     <junit-jupiter.version>5.12.1</junit-jupiter.version>
@@ -85,6 +85,8 @@
               <link>https://javadoc.io/static/org.assertj/assertj-core/${assertj.version}/</link>
               <link>https://javadoc.io/static/org.eclipse.collections/eclipse-collections-api/${eclipse-collections.version}/</link>
             </links>
+            <!-- https://bugs.openjdk.org/browse/JDK-8274639 -->
+            <additionalOptions>--allow-script-in-comments --link-modularity-mismatch=info</additionalOptions>
           </configuration>
         </plugin>
       </plugins>

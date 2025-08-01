@@ -14,7 +14,6 @@ package org.assertj.eclipse.collections.api;
 
 import org.assertj.core.api.AbstractSoftAssertions;
 import org.assertj.core.api.SoftAssertionsProvider;
-import org.opentest4j.MultipleFailuresError;
 
 import java.util.function.Consumer;
 
@@ -35,8 +34,8 @@ public class SoftAssertions extends AbstractSoftAssertions implements EclipseCol
    *
    * @param softly the Consumer containing the code that will make the soft assertions.
    *               Takes one parameter (the SoftAssertions instance used to make the assertions).
-   * @throws MultipleFailuresError if possible or SoftAssertionError if any proxied assertion objects threw an {@link
-   *                               AssertionError}
+   * @throws org.opentest4j.MultipleFailuresError MultipleFailuresError if possible or SoftAssertionError if any proxied
+   *                                              assertion objects threw an {@link AssertionError}
    */
   public static void assertSoftly(Consumer<SoftAssertions> softly) {
     SoftAssertionsProvider.assertSoftly(SoftAssertions.class, softly);

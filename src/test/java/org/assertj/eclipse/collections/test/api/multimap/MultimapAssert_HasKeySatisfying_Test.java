@@ -10,13 +10,14 @@
  *
  * Copyright 2025-2025 the original author or authors.
  */
-package org.assertj.eclipse.collections.api.multimap;
+package org.assertj.eclipse.collections.test.api.multimap;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import org.assertj.core.api.Condition;
 import org.assertj.eclipse.collections.api.SoftAssertions;
+import org.assertj.eclipse.collections.api.multimap.MultimapAssert;
 import org.eclipse.collections.api.multimap.Multimap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,13 +29,13 @@ class MultimapAssert_HasKeySatisfying_Test {
   private static final Condition<Object> FAILING_CONDITION = new Condition<>("DIS"::equals, "key equals DIS");
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#nonEmptyMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#nonEmptyMultimaps")
   void passesKeySatisfying(Multimap<String, String> actual) {
     assertThatNoException().isThrownBy(() -> new MultimapAssert<>(actual).hasKeySatisfying(PASSING_CONDITION));
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#nonEmptyMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#nonEmptyMultimaps")
   void failsKeyNotSatisfying(Multimap<String, String> actual) {
     assertThatExceptionOfType(AssertionError.class)
       .isThrownBy(() -> new MultimapAssert<>(actual).hasKeySatisfying(FAILING_CONDITION))
@@ -49,7 +50,7 @@ class MultimapAssert_HasKeySatisfying_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#nonEmptyMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#nonEmptyMultimaps")
   void softAssertionPasses(Multimap<String, String> actual) {
     SoftAssertions.assertSoftly(softly -> softly.assertThat(actual).hasKeySatisfying(PASSING_CONDITION));
   }

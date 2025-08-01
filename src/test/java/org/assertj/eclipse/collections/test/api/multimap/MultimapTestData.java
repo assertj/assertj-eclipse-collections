@@ -10,7 +10,7 @@
  *
  * Copyright 2025-2025 the original author or authors.
  */
-package org.assertj.eclipse.collections.api.multimap;
+package org.assertj.eclipse.collections.test.api.multimap;
 
 import org.eclipse.collections.api.factory.Bags;
 import org.eclipse.collections.api.factory.Lists;

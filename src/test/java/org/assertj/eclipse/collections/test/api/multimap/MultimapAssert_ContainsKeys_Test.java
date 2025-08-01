@@ -10,55 +10,56 @@
  *
  * Copyright 2025-2025 the original author or authors.
  */
-package org.assertj.eclipse.collections.api.multimap;
+package org.assertj.eclipse.collections.test.api.multimap;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import org.assertj.eclipse.collections.api.SoftAssertions;
+import org.assertj.eclipse.collections.api.multimap.MultimapAssert;
 import org.eclipse.collections.api.multimap.Multimap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-class MultimapAssert_ContainsValues_Test {
+class MultimapAssert_ContainsKeys_Test {
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#nonEmptyMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#nonEmptyMultimaps")
   void passes(Multimap<String, String> actual) {
-    assertThatNoException().isThrownBy(() -> new MultimapAssert<>(actual).containsValues("Kirk", "Picard", "Sisko", "Janeway", "Archer"));
+    assertThatNoException().isThrownBy(() -> new MultimapAssert<>(actual).containsKeys("TOS", "TNG", "DS9"));
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#emptyMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#emptyMultimaps")
   void failsEmpty(Multimap<String, String> actual) {
     assertThatExceptionOfType(AssertionError.class)
-      .isThrownBy(() -> new MultimapAssert<>(actual).containsValues("Kirk", "Picard", "Sisko", "Janeway", "Archer"))
+      .isThrownBy(() -> new MultimapAssert<>(actual).containsKeys("TOS", "TNG", "DS9"))
       .withMessageContaining("Expecting actual")
       .withMessageContaining("{}")
-      .withMessageContaining("to contain values");
+      .withMessageContaining("to contain keys");
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#nonEmptyMultimaps")
-  void failsMissingValue(Multimap<String, String> actual) {
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#nonEmptyMultimaps")
+  void failsMissingKey(Multimap<String, String> actual) {
     assertThatExceptionOfType(AssertionError.class)
-      .isThrownBy(() -> new MultimapAssert<>(actual).containsValues("Kes"))
+      .isThrownBy(() -> new MultimapAssert<>(actual).containsKeys("DIS"))
       .withMessageContaining("Expecting actual")
-      .withMessageContaining("to contain value")
-      .withMessageContaining("Kes");
+      .withMessageContaining("to contain key")
+      .withMessageContaining("DIS");
   }
 
   @Test
   void failsNullMultimap() {
     assertThatExceptionOfType(AssertionError.class)
-      .isThrownBy(() -> new MultimapAssert<>(null).containsValues("Kirk", "Picard", "Sisko", "Janeway", "Archer"))
+      .isThrownBy(() -> new MultimapAssert<>(null).containsKeys("TOS", "TNG", "DS9"))
       .withMessageContaining("Expecting actual not to be null");
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#nonEmptyMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#nonEmptyMultimaps")
   void softAssertionPasses(Multimap<String, String> actual) {
-    SoftAssertions.assertSoftly(softly -> softly.assertThat(actual).containsValues("Kirk", "Picard", "Sisko", "Janeway", "Archer"));
+    SoftAssertions.assertSoftly(softly -> softly.assertThat(actual).containsKeys("TOS", "TNG", "DS9"));
   }
 }

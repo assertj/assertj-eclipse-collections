@@ -10,44 +10,45 @@
  *
  * Copyright 2025-2025 the original author or authors.
  */
-package org.assertj.eclipse.collections.api.multimap;
+package org.assertj.eclipse.collections.test.api.multimap;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import org.assertj.eclipse.collections.api.SoftAssertions;
+import org.assertj.eclipse.collections.api.multimap.MultimapAssert;
 import org.eclipse.collections.api.multimap.Multimap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-class MultimapAssert_HasDistinctSize_Test {
+class MultimapAssert_IsEmpty_Test {
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#distinctSizeEqualsTestData")
-  void passes(Multimap<String, String> actual, int expectedSize) {
-    assertThatNoException().isThrownBy(() -> new MultimapAssert<>(actual).hasDistinctSize(expectedSize));
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#emptyMultimaps")
+  void passes(Multimap<String, String> actual) {
+    assertThatNoException().isThrownBy(() -> new MultimapAssert<>(actual).isEmpty());
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#emptyMultimapsWithExpectedDistinctSize")
-  void failsEmpty(Multimap<String, String> actual, int expectedSize) {
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#nonEmptyMultimaps")
+  void failsNotEmpty(Multimap<String, String> actual) {
     assertThatExceptionOfType(AssertionError.class)
-      .isThrownBy(() -> new MultimapAssert<>(actual).hasDistinctSize(expectedSize))
-      .withMessageContaining(String.format("Expected distinct size: %s but was: 0", expectedSize));
+      .isThrownBy(() -> new MultimapAssert<>(actual).isEmpty())
+      .withMessageContaining("Expecting empty but was: " + actual.toString());
   }
 
   @Test
   void failsNullMultimap() {
-    int expectedSize = 5; // Using the same value as in distinctSizeEqualsTestData
     assertThatExceptionOfType(AssertionError.class)
-      .isThrownBy(() -> new MultimapAssert<>(null).hasDistinctSize(expectedSize))
+      .isThrownBy(() -> new MultimapAssert<>(null).isEmpty())
       .withMessageContaining("Expecting actual not to be null");
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#distinctSizeEqualsTestData")
-  void softAssertionPasses(Multimap<String, String> actual, int expectedSize) {
-    SoftAssertions.assertSoftly(softly -> softly.assertThat(actual).hasDistinctSize(expectedSize));
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#emptyMultimaps")
+  void softAssertionPasses(Multimap<String, String> actual) {
+    assertThatNoException().isThrownBy(() ->
+      SoftAssertions.assertSoftly(softly -> softly.assertThat(actual).isEmpty()));
   }
 }

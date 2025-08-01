@@ -10,12 +10,13 @@
  *
  * Copyright 2025-2025 the original author or authors.
  */
-package org.assertj.eclipse.collections.api.multimap;
+package org.assertj.eclipse.collections.test.api.multimap;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import org.assertj.eclipse.collections.api.SoftAssertions;
+import org.assertj.eclipse.collections.api.multimap.MultimapAssert;
 import org.eclipse.collections.api.multimap.Multimap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,25 +25,25 @@ import org.junit.jupiter.params.provider.MethodSource;
 class MultimapAssert_HasSizeBetween_Test {
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#sizeBetweenTestData")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#sizeBetweenTestData")
   void passesSizeBetween(Multimap<String, String> actual, int lowerBoundary, int upperBoundary) {
     assertThatNoException().isThrownBy(() -> new MultimapAssert<>(actual).hasSizeBetween(lowerBoundary, upperBoundary));
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#sizeBetweenInclusiveUpperTestData")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#sizeBetweenInclusiveUpperTestData")
   void passesSizeBetweenInclusiveUpper(Multimap<String, String> actual, int lowerBoundary, int upperBoundary) {
     assertThatNoException().isThrownBy(() -> new MultimapAssert<>(actual).hasSizeBetween(lowerBoundary, upperBoundary));
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#sizeBetweenInclusiveLowerTestData")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#sizeBetweenInclusiveLowerTestData")
   void passesSizeBetweenInclusiveLower(Multimap<String, String> actual, int lowerBoundary, int upperBoundary) {
     assertThatNoException().isThrownBy(() -> new MultimapAssert<>(actual).hasSizeBetween(lowerBoundary, upperBoundary));
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#sizeBelowLowerBoundaryTestData")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#sizeBelowLowerBoundaryTestData")
   void failsSizeFallsBelowLowerBoundary(Multimap<String, String> actual, int lowerBoundary, int upperBoundary) {
     assertThatExceptionOfType(AssertionError.class)
       .isThrownBy(() -> new MultimapAssert<>(actual).hasSizeBetween(lowerBoundary, upperBoundary))
@@ -50,7 +51,7 @@ class MultimapAssert_HasSizeBetween_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#sizeAboveUpperBoundaryTestData")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#sizeAboveUpperBoundaryTestData")
   void failsSizeFallsAboveUpperBoundary(Multimap<String, String> actual, int lowerBoundary, int upperBoundary) {
     assertThatExceptionOfType(AssertionError.class)
       .isThrownBy(() -> new MultimapAssert<>(actual).hasSizeBetween(lowerBoundary, upperBoundary))
@@ -65,7 +66,7 @@ class MultimapAssert_HasSizeBetween_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#emptyMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#emptyMultimaps")
   void failsEmptyMultimap(Multimap<String, String> actual) {
     assertThatExceptionOfType(AssertionError.class)
       .isThrownBy(() -> new MultimapAssert<>(actual).hasSizeBetween(25, 50))
@@ -73,7 +74,7 @@ class MultimapAssert_HasSizeBetween_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#sizeBetweenTestData")
+  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#sizeBetweenTestData")
   void softAssertionPasses(Multimap<String, String> actual, int lowerBoundary, int upperBoundary) {
     SoftAssertions.assertSoftly(softly -> softly.assertThat(actual).hasSizeBetween(lowerBoundary, upperBoundary));
   }

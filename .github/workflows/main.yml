@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Set up Java
-        uses: oracle-actions/setup-java@v1
+        uses: oracle-actions/setup-java@e2d42a9441a0f656248f55d2729550221330968e # v1
         with:
           website: jdk.java.net
           release: ${{ matrix.java }}

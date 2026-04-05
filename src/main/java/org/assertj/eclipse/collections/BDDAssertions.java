@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.assertj.eclipse.collections.api;
+package org.assertj.eclipse.collections;
 
 import org.assertj.core.util.CheckReturnValue;
-import org.assertj.eclipse.collections.api.multimap.MultimapAssert;
+import org.assertj.eclipse.collections.multimap.MultimapAssert;
 import org.eclipse.collections.api.multimap.Multimap;
 
 /**

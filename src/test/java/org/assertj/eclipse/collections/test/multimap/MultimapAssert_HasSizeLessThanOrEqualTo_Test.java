@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.assertj.eclipse.collections.test.api.multimap;
+package org.assertj.eclipse.collections.test.multimap;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
-import org.assertj.eclipse.collections.api.SoftAssertions;
-import org.assertj.eclipse.collections.api.multimap.MultimapAssert;
+import org.assertj.eclipse.collections.SoftAssertions;
+import org.assertj.eclipse.collections.multimap.MultimapAssert;
 import org.eclipse.collections.api.multimap.Multimap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,19 +28,19 @@ import org.junit.jupiter.params.provider.MethodSource;
 class MultimapAssert_HasSizeLessThanOrEqualTo_Test {
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#sizeUpperBoundaryTestData")
+  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#sizeUpperBoundaryTestData")
   void passesLessThan(Multimap<String, String> actual, int upperBoundary) {
     assertThatNoException().isThrownBy(() -> new MultimapAssert<>(actual).hasSizeLessThanOrEqualTo(upperBoundary));
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#sizeEqualsTestData")
+  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#sizeEqualsTestData")
   void passesEqual(Multimap<String, String> actual, int equalsBoundary) {
     assertThatNoException().isThrownBy(() -> new MultimapAssert<>(actual).hasSizeLessThanOrEqualTo(equalsBoundary));
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#sizeLowerBoundaryTestData")
+  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#sizeLowerBoundaryTestData")
   void failsGreater(Multimap<String, String> actual, int lowerBoundary) {
     assertThatExceptionOfType(AssertionError.class)
       .isThrownBy(() -> new MultimapAssert<>(actual).hasSizeLessThanOrEqualTo(lowerBoundary))
@@ -56,7 +56,7 @@ class MultimapAssert_HasSizeLessThanOrEqualTo_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.api.multimap.MultimapTestData#sizeUpperBoundaryTestData")
+  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#sizeUpperBoundaryTestData")
   void softAssertionPasses(Multimap<String, String> actual, int upperBoundary) {
     SoftAssertions.assertSoftly(softly -> softly.assertThat(actual).hasSizeLessThanOrEqualTo(upperBoundary));
   }

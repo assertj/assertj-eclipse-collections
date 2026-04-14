@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.assertj.eclipse.collections.test.multimap;
+package org.assertj.eclipse.collections.api.multimap;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
-import org.assertj.eclipse.collections.SoftAssertions;
-import org.assertj.eclipse.collections.multimap.MultimapAssert;
+import org.assertj.eclipse.collections.api.SoftAssertions;
+import org.assertj.eclipse.collections.api.MultimapAssert;
 import org.eclipse.collections.api.multimap.Multimap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,13 +28,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 class MultimapAssert_HasDistinctSize_Test {
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#distinctSizeEqualsTestData")
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#distinctSizeEqualsTestData")
   void passes(Multimap<String, String> actual, int expectedSize) {
     assertThatNoException().isThrownBy(() -> new MultimapAssert<>(actual).hasDistinctSize(expectedSize));
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#emptyMultimapsWithExpectedDistinctSize")
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#emptyMultimapsWithExpectedDistinctSize")
   void failsEmpty(Multimap<String, String> actual, int expectedSize) {
     assertThatExceptionOfType(AssertionError.class)
       .isThrownBy(() -> new MultimapAssert<>(actual).hasDistinctSize(expectedSize))
@@ -50,7 +50,7 @@ class MultimapAssert_HasDistinctSize_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#distinctSizeEqualsTestData")
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#distinctSizeEqualsTestData")
   void softAssertionPasses(Multimap<String, String> actual, int expectedSize) {
     SoftAssertions.assertSoftly(softly -> softly.assertThat(actual).hasDistinctSize(expectedSize));
   }

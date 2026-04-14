@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.assertj.eclipse.collections.test.multimap;
+package org.assertj.eclipse.collections.api.multimap;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
@@ -21,8 +21,8 @@ import static org.eclipse.collections.impl.tuple.Tuples.pair;
 
 import java.util.Map;
 
-import org.assertj.eclipse.collections.SoftAssertions;
-import org.assertj.eclipse.collections.multimap.MultimapAssert;
+import org.assertj.eclipse.collections.api.SoftAssertions;
+import org.assertj.eclipse.collections.api.MultimapAssert;
 import org.eclipse.collections.api.multimap.Multimap;
 import org.eclipse.collections.api.tuple.Pair;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 class MultimapAssert_ContainsOnly_Test {
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#shipMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#shipMultimaps")
   void passesWithPairs(Multimap<String, String> actual) {
     Pair<String, String>[] exactMatchPairs = new Pair[]{
       pair("TNG", "Enterprise"),
@@ -44,7 +44,7 @@ class MultimapAssert_ContainsOnly_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#shipMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#shipMultimaps")
   void passesWithEntries(Multimap<String, String> actual) {
     Map.Entry<String, String>[] exactMatchEntries = new Map.Entry[]{
       pair("TNG", "Enterprise").toEntry(),
@@ -56,7 +56,7 @@ class MultimapAssert_ContainsOnly_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#shipMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#shipMultimaps")
   void failsWhenAdditionalKeysOrValuesExistWithPair(Multimap<String, String> actual) {
     Pair<String, String>[] partialMatchMissingPairs = new Pair[]{
       pair("TNG", "Enterprise"),
@@ -70,7 +70,7 @@ class MultimapAssert_ContainsOnly_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#shipMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#shipMultimaps")
   void failsWhenAdditionalKeysOrValuesExistWithEntry(Multimap<String, String> actual) {
     Map.Entry<String, String>[] partialMatchMissingEntries = new Map.Entry[]{
       pair("TNG", "Enterprise").toEntry(),
@@ -84,7 +84,7 @@ class MultimapAssert_ContainsOnly_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#shipMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#shipMultimaps")
   void failsWhenEntryIsMissingWithPair(Multimap<String, String> actual) {
     Pair<String, String>[] partialMatchExtraPairs = new Pair[]{
       pair("TOS", "Enterprise"),
@@ -100,7 +100,7 @@ class MultimapAssert_ContainsOnly_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#shipMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#shipMultimaps")
   void failsWhenEntryIsMissingWithEntry(Multimap<String, String> actual) {
     Map.Entry<String, String>[] partialMatchExtraEntries = new Map.Entry[]{
       pair("TOS", "Enterprise").toEntry(),
@@ -116,7 +116,7 @@ class MultimapAssert_ContainsOnly_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#emptyMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#emptyMultimaps")
   void failsForEmptyMultimapWithPair(Multimap<String, String> actual) {
     Pair<String, String>[] exactMatchPairs = new Pair[]{
       pair("TNG", "Enterprise"),
@@ -129,7 +129,7 @@ class MultimapAssert_ContainsOnly_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#emptyMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#emptyMultimaps")
   void failsForEmptyMultimapWithEntry(Multimap<String, String> actual) {
     Map.Entry<String, String>[] exactMatchEntries = new Map.Entry[]{
       pair("TNG", "Enterprise").toEntry(),
@@ -164,7 +164,7 @@ class MultimapAssert_ContainsOnly_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#shipMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#shipMultimaps")
   void softAssertionPassesWithPairs(Multimap<String, String> actual) {
     Pair<String, String>[] exactMatchPairs = new Pair[]{
       pair("TNG", "Enterprise"),
@@ -176,7 +176,7 @@ class MultimapAssert_ContainsOnly_Test {
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#shipMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#shipMultimaps")
   void softAssertionPassesWithEntries(Multimap<String, String> actual) {
     Map.Entry<String, String>[] exactMatchEntries = new Map.Entry[]{
       pair("TNG", "Enterprise").toEntry(),

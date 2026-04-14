@@ -17,7 +17,7 @@
  * Test module for AssertJ Eclipse Collections
  */
 open module org.assertj.eclipse.collections.test {
-  exports org.assertj.eclipse.collections.test.multimap;
+  exports org.assertj.eclipse.collections.api.multimap;
 
   requires org.assertj.eclipse.collections;
   requires org.assertj.core;

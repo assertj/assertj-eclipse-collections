@@ -13,45 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.assertj.eclipse.collections.test.multimap;
+package org.assertj.eclipse.collections.api.multimap;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
-import org.assertj.eclipse.collections.SoftAssertions;
-import org.assertj.eclipse.collections.multimap.MultimapAssert;
+import org.assertj.eclipse.collections.api.SoftAssertions;
+import org.assertj.eclipse.collections.api.MultimapAssert;
 import org.eclipse.collections.api.multimap.Multimap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-class MultimapAssert_IsEmpty_Test {
+class MultimapAssert_IsNotEmpty_Test {
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#emptyMultimaps")
-  void passes(Multimap<String, String> actual) {
-    assertThatNoException().isThrownBy(() -> new MultimapAssert<>(actual).isEmpty());
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#nonEmptyMultimaps")
+  void passesNotEmpty(Multimap<String, String> actual) {
+    assertThatNoException().isThrownBy(() -> new MultimapAssert<>(actual).isNotEmpty());
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#nonEmptyMultimaps")
-  void failsNotEmpty(Multimap<String, String> actual) {
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#emptyMultimaps")
+  void failsEmpty(Multimap<String, String> actual) {
     assertThatExceptionOfType(AssertionError.class)
-      .isThrownBy(() -> new MultimapAssert<>(actual).isEmpty())
-      .withMessageContaining("Expecting empty but was: " + actual.toString());
+      .isThrownBy(() -> new MultimapAssert<>(actual).isNotEmpty())
+      .withMessageContaining("Expecting actual not to be empty");
   }
 
   @Test
   void failsNullMultimap() {
     assertThatExceptionOfType(AssertionError.class)
-      .isThrownBy(() -> new MultimapAssert<>(null).isEmpty())
+      .isThrownBy(() -> new MultimapAssert<>(null).isNotEmpty())
       .withMessageContaining("Expecting actual not to be null");
   }
 
   @ParameterizedTest
-  @MethodSource("org.assertj.eclipse.collections.test.multimap.MultimapTestData#emptyMultimaps")
+  @MethodSource("org.assertj.eclipse.collections.api.multimap.MultimapTestData#nonEmptyMultimaps")
   void softAssertionPasses(Multimap<String, String> actual) {
-    assertThatNoException().isThrownBy(() ->
-      SoftAssertions.assertSoftly(softly -> softly.assertThat(actual).isEmpty()));
+    SoftAssertions.assertSoftly(softly -> softly.assertThat(actual).isNotEmpty());
   }
 }

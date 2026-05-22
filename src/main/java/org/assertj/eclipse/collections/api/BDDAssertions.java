@@ -39,13 +39,20 @@ public class BDDAssertions extends Assertions {
    * Creates a new instance of {@link BagAssert}.
    *
    * @param actual the actual value.
-   * @return thre created assertion object.
-   * @param <T> THe type of the elements in the bag
+   * @return the created assertion object.
+   * @param <T> The type of the elements in the bag
    */
   public static <T> BagAssert<T> then(Bag<T> actual) {
     return assertThat(actual);
   }
 
+  /**
+   * Creates a new instance of {@link ListIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   * @param <T> The type of the elements in the list
+   */
   public static <T> ListIterableAssert<T> then(ListIterable<T> actual) {
     return assertThat(actual);
   }
@@ -73,6 +80,13 @@ public class BDDAssertions extends Assertions {
     return assertThat(actual);
   }
 
+  /**
+   * Creates a new instance of {@link StackIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   * @param <T> The type of the elements in the stack
+   */
   public static <T> StackIterableAssert<T> then(StackIterable<T> actual) {
     return assertThat(actual);
   }

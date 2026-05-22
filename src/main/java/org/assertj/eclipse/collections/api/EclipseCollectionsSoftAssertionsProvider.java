@@ -41,6 +41,13 @@ public interface EclipseCollectionsSoftAssertionsProvider extends SoftAssertions
     return this.proxy(BagAssert.class, Bag.class, actual);
   }
 
+  /**
+   * Creates a new, proxied instance of a {@link ListIterableAssert}
+   *
+   * @param actual the actual value
+   * @return the created assertion object
+   * @param <T> The type of the elements in the list
+   */
   @SuppressWarnings("unchecked")
   default <T> ListIterableAssert<T> assertThat(ListIterable<T> actual) {
     return this.proxy(ListIterableAssert.class, ListIterable.class, actual);
@@ -71,6 +78,13 @@ public interface EclipseCollectionsSoftAssertionsProvider extends SoftAssertions
     return this.proxy(SetIterableAssert.class, SetIterable.class, actual);
   }
 
+  /**
+   * Creates a new, proxied instance of a {@link StackIterableAssert}
+   *
+   * @param actual the actual value
+   * @return the created assertion object
+   * @param <T> The type of the elements in the stack
+   */
   @SuppressWarnings("unchecked")
   default <T> StackIterableAssert<T> assertThat(StackIterable<T> actual) {
     return this.proxy(StackIterableAssert.class, StackIterable.class, actual);

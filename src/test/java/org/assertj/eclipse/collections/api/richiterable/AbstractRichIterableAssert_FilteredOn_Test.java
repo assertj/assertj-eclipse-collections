@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class AbstractRichIterableAssert_FilteredOn_Test {
+class AbstractRichIterableAssert_FilteredOn_Test {
   @RichIterableParameterizedTest
   void filteredOn_function_passes(RichIterableAssertFactory<String> assertFactory) {
     assertThatNoException().isThrownBy(() -> assertFactory.fromElements("TOS", "TNG", "DS9", "VOY", "ENT").filteredOn(s -> s.charAt(0), 'T')

@@ -24,6 +24,11 @@ import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 
+/**
+ * Assertion methods for {@link ListIterable} interface.
+ *
+ * @param <ELEMENT> the type of elements stored in {@link ListIterable}.
+ */
 public class ListIterableAssert<ELEMENT> extends AbstractOrderedIterableAssert<ListIterableAssert<ELEMENT>, ListIterable<? extends ELEMENT>, ELEMENT, ObjectAssert<ELEMENT>> {
   public ListIterableAssert(ListIterable<? extends ELEMENT> actual) {
     super(actual, ListIterableAssert.class);

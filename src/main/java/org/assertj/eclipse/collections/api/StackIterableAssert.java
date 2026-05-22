@@ -21,6 +21,11 @@ import org.eclipse.collections.api.factory.Stacks;
 import org.eclipse.collections.api.stack.ImmutableStack;
 import org.eclipse.collections.api.stack.StackIterable;
 
+/**
+ * Assertion methods for {@link StackIterable} interface.
+ *
+ * @param <ELEMENT> the type of elements stored in {@link StackIterable}.
+ */
 @CheckReturnValue
 public class StackIterableAssert<ELEMENT> extends AbstractOrderedIterableAssert<StackIterableAssert<ELEMENT>, StackIterable<? extends ELEMENT>, ELEMENT, ObjectAssert<ELEMENT>> {
   public StackIterableAssert(StackIterable<? extends ELEMENT> actual) {

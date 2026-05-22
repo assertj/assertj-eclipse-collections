@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.assertj.eclipse.collections.api.bag;
+package org.assertj.eclipse.collections.api.richiterable;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
@@ -21,45 +21,32 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import org.assertj.eclipse.collections.api.BagAssert;
-import org.eclipse.collections.api.bag.ImmutableBag;
-import org.eclipse.collections.api.factory.Bags;
-import org.junit.jupiter.api.Test;
-
-public class BagAssert_FilteredOn_Test {
-  @Test
-  void filteredOn_function_passes() {
-    ImmutableBag<String> bag = Bags.immutable.of("TOS", "TNG", "DS9", "VOY", "ENT");
-
-    assertThatNoException().isThrownBy(() -> new BagAssert<>(bag).filteredOn(s -> s.charAt(0), 'T')
+public class AbstractRichIterableAssert_FilteredOn_Test {
+  @RichIterableParameterizedTest
+  void filteredOn_function_passes(RichIterableAssertFactory<String> assertFactory) {
+    assertThatNoException().isThrownBy(() -> assertFactory.fromElements("TOS", "TNG", "DS9", "VOY", "ENT").filteredOn(s -> s.charAt(0), 'T')
       .hasSize(2)
       .containsOnly("TOS", "TNG"));
   }
 
-  @Test
-  void filteredOn_function_nullFunction_throwsException() {
-    ImmutableBag<String> bag = Bags.immutable.of("TOS", "TNG", "DS9", "VOY", "ENT");
-
+  @RichIterableParameterizedTest
+  void filteredOn_function_nullFunction_throwsException(RichIterableAssertFactory<String> assertFactory) {
     assertThatExceptionOfType(IllegalArgumentException.class)
-      .isThrownBy(() -> new BagAssert<>(bag).filteredOn((Function) null, 'T'))
+      .isThrownBy(() -> assertFactory.fromElements("TOS", "TNG", "DS9", "VOY", "ENT").filteredOn((Function) null, 'T'))
       .withMessageContaining("The filter function should not be null");
   }
 
-  @Test
-  void filteredOn_predicate_passes() {
-    ImmutableBag<String> bag = Bags.immutable.of("TOS", "TNG", "DS9", "VOY", "ENT");
-
-    assertThatNoException().isThrownBy(() -> new BagAssert<>(bag).filteredOn(s -> s.startsWith("T"))
+  @RichIterableParameterizedTest
+  void filteredOn_predicate_passes(RichIterableAssertFactory<String> assertFactory) {
+    assertThatNoException().isThrownBy(() -> assertFactory.fromElements("TOS", "TNG", "DS9", "VOY", "ENT").filteredOn(s -> s.startsWith("T"))
       .hasSize(2)
       .containsOnly("TOS", "TNG"));
   }
 
-  @Test
-  void filteredOn_predicate_nullPredicate_throwsException() {
-    ImmutableBag<String> bag = Bags.immutable.of("TOS", "TNG", "DS9", "VOY", "ENT");
-
+  @RichIterableParameterizedTest
+  void filteredOn_predicate_nullPredicate_throwsException(RichIterableAssertFactory<String> assertFactory) {
     assertThatExceptionOfType(IllegalArgumentException.class)
-      .isThrownBy(() -> new BagAssert<>(bag).filteredOn((Predicate) null))
+      .isThrownBy(() -> assertFactory.fromElements("TOS", "TNG", "DS9", "VOY", "ENT").filteredOn((Predicate) null))
       .withMessageContaining("The filter predicate should not be null");
   }
 }

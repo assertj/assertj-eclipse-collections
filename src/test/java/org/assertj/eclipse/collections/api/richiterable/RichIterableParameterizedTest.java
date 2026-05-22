@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * Test module for AssertJ Eclipse Collections
- */
-open module org.assertj.eclipse.collections.test {
-  exports org.assertj.eclipse.collections.api.multimap;
-  exports org.assertj.eclipse.collections.api.richiterable;
+package org.assertj.eclipse.collections.api.richiterable;
 
-  requires org.assertj.eclipse.collections;
-  requires org.assertj.core;
-  requires org.eclipse.collections.api;
-  requires org.eclipse.collections.impl;
-  requires org.junit.jupiter.api;
-  requires org.junit.jupiter.params;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ArgumentsSource;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@ParameterizedTest(name = "{0}")
+@ArgumentsSource(RichIterableArgumentsProvider.class)
+public @interface RichIterableParameterizedTest {
 }

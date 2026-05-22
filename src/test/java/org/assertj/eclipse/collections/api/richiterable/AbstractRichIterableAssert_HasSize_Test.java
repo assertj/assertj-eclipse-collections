@@ -13,46 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.assertj.eclipse.collections.api.set;
+package org.assertj.eclipse.collections.api.richiterable;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
-import org.assertj.eclipse.collections.api.SetIterableAssert;
 import org.assertj.eclipse.collections.api.SoftAssertions;
-import org.eclipse.collections.api.factory.Sets;
-import org.eclipse.collections.api.set.ImmutableSet;
-import org.junit.jupiter.api.Test;
 
-public class SetIterableAssert_HasSize_Test {
-  @Test
-  void passes() {
-    ImmutableSet<String> set = createSet();
-    assertThatNoException().isThrownBy(() -> new SetIterableAssert<>(set).hasSize(5));
+class AbstractRichIterableAssert_HasSize_Test {
+
+  @RichIterableParameterizedTest
+  void passes(RichIterableAssertFactory<String> assertFactory) {
+    assertThatNoException().isThrownBy(() ->
+      assertFactory.fromElements("TOS", "TNG", "DS9", "VOY", "ENT").hasSize(5));
   }
 
-  @Test
-  void failsEmpty() {
-    ImmutableSet<String> set = Sets.immutable.empty();
+  @RichIterableParameterizedTest
+  void failsEmpty(RichIterableAssertFactory<String> assertFactory) {
     assertThatExceptionOfType(AssertionError.class)
-      .isThrownBy(() -> new SetIterableAssert<>(set).hasSize(5))
+      .isThrownBy(() -> assertFactory.fromEmpty().hasSize(5))
       .withMessageContaining(String.format("Expected size: %s but was: 0", 5));
   }
 
-  @Test
-  void failsNullInput() {
+  @RichIterableParameterizedTest
+  void failsNullInput(RichIterableAssertFactory<String> assertFactory) {
     assertThatExceptionOfType(AssertionError.class)
-      .isThrownBy(() -> new SetIterableAssert<>(null).hasSize(5))
+      .isThrownBy(() -> assertFactory.fromNull().hasSize(5))
       .withMessageContaining("Expecting actual not to be null");
   }
 
-  @Test
-  void softAssertionPasses() {
-    ImmutableSet<String> set = createSet();
-    SoftAssertions.assertSoftly(softly -> softly.assertThat(set).hasSize(5));
-  }
-
-  private static ImmutableSet<String> createSet() {
-    return Sets.immutable.of("TOS", "TNG", "DS9", "VOY", "ENT");
+  @RichIterableParameterizedTest
+  void softAssertionPasses(RichIterableAssertFactory<String> assertFactory) {
+    SoftAssertions.assertSoftly(softly -> assertFactory.softlyFromElements(softly, "TOS", "TNG", "DS9", "VOY", "ENT").hasSize(5));
   }
 }

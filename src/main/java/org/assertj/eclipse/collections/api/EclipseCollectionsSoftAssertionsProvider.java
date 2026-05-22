@@ -18,8 +18,10 @@ package org.assertj.eclipse.collections.api;
 import org.assertj.core.annotation.CheckReturnValue;
 import org.assertj.core.api.SoftAssertionsProvider;
 import org.eclipse.collections.api.bag.Bag;
+import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.multimap.Multimap;
 import org.eclipse.collections.api.set.SetIterable;
+import org.eclipse.collections.api.stack.StackIterable;
 
 /**
  * Soft assertions implementations for Eclipse Collections types.
@@ -37,6 +39,11 @@ public interface EclipseCollectionsSoftAssertionsProvider extends SoftAssertions
   @SuppressWarnings("unchecked")
   default <T> BagAssert<T> assertThat(Bag<T> actual) {
     return this.proxy(BagAssert.class, Bag.class, actual);
+  }
+
+  @SuppressWarnings("unchecked")
+  default <T> ListIterableAssert<T> assertThat(ListIterable<T> actual) {
+    return this.proxy(ListIterableAssert.class, ListIterable.class, actual);
   }
 
   /**
@@ -62,5 +69,10 @@ public interface EclipseCollectionsSoftAssertionsProvider extends SoftAssertions
   @SuppressWarnings("unchecked")
   default <T> SetIterableAssert<T> assertThat(SetIterable<T> actual) {
     return this.proxy(SetIterableAssert.class, SetIterable.class, actual);
+  }
+
+  @SuppressWarnings("unchecked")
+  default <T> StackIterableAssert<T> assertThat(StackIterable<T> actual) {
+    return this.proxy(StackIterableAssert.class, StackIterable.class, actual);
   }
 }

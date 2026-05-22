@@ -17,8 +17,10 @@ package org.assertj.eclipse.collections.api;
 
 import org.assertj.core.annotation.CheckReturnValue;
 import org.eclipse.collections.api.bag.Bag;
+import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.multimap.Multimap;
 import org.eclipse.collections.api.set.SetIterable;
+import org.eclipse.collections.api.stack.StackIterable;
 
 /**
  * Behavior-driven development style entry point for assertion methods for the Eclipse Collections library. Each method
@@ -44,6 +46,10 @@ public class BDDAssertions extends Assertions {
     return assertThat(actual);
   }
 
+  public static <T> ListIterableAssert<T> then(ListIterable<T> actual) {
+    return assertThat(actual);
+  }
+
   /**
    * Creates a new instance of {@link MultimapAssert}.
    *
@@ -64,6 +70,10 @@ public class BDDAssertions extends Assertions {
    * @param <T> The type of the elements in the set
    */
   public static <T> SetIterableAssert<T> then(SetIterable<T> actual) {
+    return assertThat(actual);
+  }
+
+  public static <T> StackIterableAssert<T> then(StackIterable<T> actual) {
     return assertThat(actual);
   }
 }

@@ -2,8 +2,11 @@ package org.assertj.eclipse.collections.api.list;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.assertj.eclipse.collections.api.ListIterableAssert;
+import org.assertj.eclipse.collections.api.StackIterableAssert;
 import org.eclipse.collections.api.factory.Lists;
+import org.eclipse.collections.api.factory.Stacks;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.stack.ImmutableStack;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -31,5 +34,14 @@ class ListIterableAssert_Last_Test {
     assertThatExceptionOfType(AssertionError.class).isThrownBy(() ->
       new ListIterableAssert<>(null).last().isEqualTo("ENT")
     ).withMessageContaining("Expecting actual not to be null");
+  }
+
+  @Test
+  void throwsExceptionWhenLastElementIsNull() {
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> {
+        ImmutableList<String> list = Lists.immutable.of("TOS", "TNG", "DS9", "VOY", null);
+        new ListIterableAssert<>(list).last().isEqualTo("ENT");
+      }).withMessageContaining("check last element")
+      .withMessageContaining("but was: null");
   }
 }

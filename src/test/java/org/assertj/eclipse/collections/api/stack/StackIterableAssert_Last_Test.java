@@ -47,4 +47,13 @@ public class StackIterableAssert_Last_Test {
       new StackIterableAssert<>(null).last().isEqualTo("TOS")
     ).withMessageContaining("Expecting actual not to be null");
   }
+
+  @Test
+  void throwsExceptionWhenLastElementIsNull() {
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> {
+        ImmutableStack<String> list = Stacks.immutable.of(null, "TNG", "DS9", "VOY", "ENT");
+        new StackIterableAssert<>(list).last().isEqualTo("TOS");
+      }).withMessageContaining("check last element")
+      .withMessageContaining("but was: null");
+  }
 }

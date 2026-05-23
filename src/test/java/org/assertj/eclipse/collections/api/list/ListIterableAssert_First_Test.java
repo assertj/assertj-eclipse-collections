@@ -47,4 +47,13 @@ class ListIterableAssert_First_Test {
       new ListIterableAssert<>(null).first().isEqualTo("TOS")
     ).withMessageContaining("Expecting actual not to be null");
   }
+
+  @Test
+  void throwsExceptionWhenLastElementIsNull() {
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> {
+        ImmutableList<String> list = Lists.immutable.of(null, "TNG", "DS9", "VOY", null);
+        new ListIterableAssert<>(list).first().isEqualTo("TOS");
+      }).withMessageContaining("check first element")
+      .withMessageContaining("but was: null");
+  }
 }

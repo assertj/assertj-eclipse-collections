@@ -47,4 +47,13 @@ public class StackIterableAssert_First_Test {
       new StackIterableAssert<>(null).first().isEqualTo("ENT")
     ).withMessageContaining("Expecting actual not to be null");
   }
+
+  @Test
+  void throwsExceptionWhenFirstElementIsNull() {
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> {
+      ImmutableStack<String> list = Stacks.immutable.of("TOS", "TNG", "DS9", "VOY", null);
+      new StackIterableAssert<>(list).first().isEqualTo("ENT");
+    }).withMessageContaining("check first element")
+      .withMessageContaining("but was: null");
+  }
 }

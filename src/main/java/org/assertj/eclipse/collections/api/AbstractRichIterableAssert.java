@@ -17,6 +17,7 @@ package org.assertj.eclipse.collections.api;
 
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThan.shouldHaveSizeGreaterThan;
+import static org.assertj.core.error.ShouldHaveSizeGreaterThanOrEqualTo.shouldHaveSizeGreaterThanOrEqualTo;
 import static org.assertj.core.util.Preconditions.checkArgument;
 
 import java.util.Objects;
@@ -134,6 +135,35 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
     }
 
     throw assertionError(shouldHaveSizeGreaterThan(actual, actualSize, boundary));
+  }
+
+  /**
+   * Verifies that the number of values in the actual group is greater than or equal to the given boundary.
+   * <p>
+   * Example:
+   * <pre>{@code // assertions will pass
+   * assertThat(Lists.immutable.of("TOS", "TNG", "DS9")).hasSizeGreaterThanOrEqualTo(3);
+   * assertThat(Lists.immutable.of("TNG", "DS9")).hasSizeGreaterThanOrEqualTo(1);
+   *
+   * // assertions will fail
+   * assertThat(Lists.immutable.of("TNG", "DS9")).hasSizeGreaterThanOrEqualTo(3);
+   * assertThat(Lists.immutable.of("TOS", "TNG", "DS9")).hasSizeGreaterThanOrEqualTo(4);
+   * }</pre>
+   *
+   * @param boundary the given value to compare the actual size to.
+   * @return {@code this} assertion object.
+   * @throws AssertionError if the number of values of the actual group is not greater than or equal to the boundary.
+   */
+  @Override
+  public SELF hasSizeGreaterThanOrEqualTo(int boundary) {
+    isNotNull();
+
+    int actualSize = actual.size();
+    if (actualSize >= boundary) {
+      return myself;
+    }
+
+    throw assertionError(shouldHaveSizeGreaterThanOrEqualTo(actual, actualSize, boundary));
   }
 
   /**

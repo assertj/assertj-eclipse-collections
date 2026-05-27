@@ -46,6 +46,13 @@ public class Assertions {
     return new BagAssert<>(actual);
   }
 
+  /**
+   * Creates a new instance of {@link ListIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   * @param <T> The type of the elements in the list
+   */
   public static <T> ListIterableAssert<T> assertThat(ListIterable<T> actual) {
     return new ListIterableAssert<>(actual);
   }
@@ -73,6 +80,13 @@ public class Assertions {
     return new SetIterableAssert<>(actual);
   }
 
+  /**
+   * Creates a new instance of {@link StackIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   * @param <T> The type of the elements in the stack
+   */
   public static <T> StackIterableAssert<T> assertThat(StackIterable<T> actual) {
     return new StackIterableAssert<>(actual);
   }

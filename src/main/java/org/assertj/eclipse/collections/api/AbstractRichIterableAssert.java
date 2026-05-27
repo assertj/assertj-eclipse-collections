@@ -16,6 +16,7 @@
 package org.assertj.eclipse.collections.api;
 
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
+import static org.assertj.core.error.ShouldHaveSizeGreaterThan.shouldHaveSizeGreaterThan;
 import static org.assertj.core.util.Preconditions.checkArgument;
 
 import java.util.Objects;
@@ -106,6 +107,33 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
     }
 
     throw assertionError(shouldHaveSize(actual, actualSize, expected));
+  }
+
+  /**
+   * Verifies that the number of values in the actual RichIterable is greater than the given boundary.
+   * <p>
+   * Example:
+   * <pre>{@code // assertion will pass
+   * assertThat(Lists.immutable.of("TOS", "TNG", "DS9")).hasSizeGreaterThan(2);
+   *
+   * // assertion will fail
+   * assertThat(Lists.immutable.of("TOS", "TNG", "DS9")).hasSizeGreaterThan(3);
+   * }</pre>
+   *
+   * @param boundary the given value to compare the actual size to.
+   * @return {@code this} assertion object.
+   * @throws AssertionError if the number of values of the actual iterable is not greater than the boundary.
+   */
+  @Override
+  public SELF hasSizeGreaterThan(int boundary) {
+    isNotNull();
+
+    int actualSize = actual.size();
+    if (actualSize > boundary) {
+      return myself;
+    }
+
+    throw assertionError(shouldHaveSizeGreaterThan(actual, actualSize, boundary));
   }
 
   /**

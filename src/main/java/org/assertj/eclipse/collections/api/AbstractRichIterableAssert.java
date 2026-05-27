@@ -15,6 +15,7 @@
  */
 package org.assertj.eclipse.collections.api;
 
+import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThan.shouldHaveSizeGreaterThan;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThanOrEqualTo.shouldHaveSizeGreaterThanOrEqualTo;
@@ -164,6 +165,17 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
     }
 
     throw assertionError(shouldHaveSizeGreaterThanOrEqualTo(actual, actualSize, boundary));
+  }
+
+  @Override
+  public void isEmpty() {
+    isNotNull();
+
+    if (actual.isEmpty()) {
+      return;
+    }
+
+    throw assertionError(shouldBeEmpty(actual));
   }
 
   /**

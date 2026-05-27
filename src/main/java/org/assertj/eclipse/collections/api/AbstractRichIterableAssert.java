@@ -167,6 +167,9 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
     throw assertionError(shouldHaveSizeGreaterThanOrEqualTo(actual, actualSize, boundary));
   }
 
+  /**
+   * Verifies that the actual RichIterable is empty.
+   */
   @Override
   public void isEmpty() {
     isNotNull();

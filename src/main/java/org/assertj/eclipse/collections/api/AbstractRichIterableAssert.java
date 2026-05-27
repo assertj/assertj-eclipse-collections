@@ -194,7 +194,7 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
   public SELF isNotEmpty() {
     isNotNull();
 
-    if (!actual.isEmpty()) {
+    if (actual.notEmpty()) {
       return myself;
     }
 

@@ -19,6 +19,7 @@ import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThan.shouldHaveSizeGreaterThan;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThanOrEqualTo.shouldHaveSizeGreaterThanOrEqualTo;
+import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 import static org.assertj.core.util.Preconditions.checkArgument;
 
 import java.util.Objects;
@@ -169,6 +170,8 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
 
   /**
    * Verifies that the actual RichIterable is empty.
+   *
+   * @throws AssertionError if the actual RichIterable is not empty.
    */
   @Override
   public void isEmpty() {
@@ -179,6 +182,23 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
     }
 
     throw assertionError(shouldBeEmpty(actual));
+  }
+
+  /**
+   * Verifies that the actual RichIterable is not empty.
+   *
+   * @return {@code this} assertion object.
+   * @throws AssertionError if the actual RichIterable is empty.
+   */
+  @Override
+  public SELF isNotEmpty() {
+    isNotNull();
+
+    if (!actual.isEmpty()) {
+      return myself;
+    }
+
+    throw assertionError(shouldNotBeEmpty());
   }
 
   /**

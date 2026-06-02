@@ -20,6 +20,7 @@ import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.core.error.ShouldHaveSameSizeAs.shouldHaveSameSizeAs;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
+import static org.assertj.core.error.ShouldHaveSizeBetween.shouldHaveSizeBetween;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThan.shouldHaveSizeGreaterThan;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThanOrEqualTo.shouldHaveSizeGreaterThanOrEqualTo;
 import static org.assertj.core.error.ShouldHaveSizeLessThan.shouldHaveSizeLessThan;
@@ -168,6 +169,41 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
     }
 
     throw assertionError(shouldHaveSize(actual, actualSize, expected));
+  }
+
+  /**
+   * Verifies that the number of values in the actual RichIterable is between the given boundaries (inclusive).
+   * <p>
+   * Example:
+   * <pre><code class='java'> // assertions will pass
+   * assertThat(Arrays.asList(1, 2, 3)).hasSizeBetween(2, 3)
+   *                                   .hasSizeBetween(3, 4)
+   *                                   .hasSizeBetween(3, 3);
+   *
+   * // assertion will fail
+   * assertThat(Arrays.asList(1, 2, 3)).hasSizeBetween(4, 6);</code></pre>
+   *
+   * @param lowerBoundary  the lower boundary compared to which actual size should be greater than or equal to.
+   * @param higherBoundary the higher boundary compared to which actual size should be less than or equal to.
+   * @return {@code this} assertion object.
+   * @throws AssertionError if the number of values of the actual RichIterable is not between the boundaries.
+   */
+  @Override
+  public SELF hasSizeBetween(int lowerBoundary, int higherBoundary) {
+    isNotNull();
+
+    if (!(higherBoundary >= lowerBoundary)) {
+      throw new IllegalArgumentException("The higher boundary <%s> must be greater than the lower boundary <%s>.".formatted(
+        higherBoundary,
+        lowerBoundary));
+    }
+
+    int actualSize = actual.size();
+    if (actualSize >= lowerBoundary && actualSize <= higherBoundary) {
+      return myself;
+    }
+
+    throw assertionError(shouldHaveSizeBetween(actual, actualSize, lowerBoundary, higherBoundary));
   }
 
   /**

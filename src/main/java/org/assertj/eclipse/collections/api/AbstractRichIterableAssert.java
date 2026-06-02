@@ -15,16 +15,20 @@
  */
 package org.assertj.eclipse.collections.api;
 
+import static org.assertj.core.error.ShouldBeAnArray.shouldBeAnArray;
 import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
+import static org.assertj.core.error.ShouldHaveSameSizeAs.shouldHaveSameSizeAs;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThan.shouldHaveSizeGreaterThan;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThanOrEqualTo.shouldHaveSizeGreaterThanOrEqualTo;
 import static org.assertj.core.error.ShouldHaveSizeLessThan.shouldHaveSizeLessThan;
 import static org.assertj.core.error.ShouldHaveSizeLessThanOrEqualTo.shouldHaveSizeLessThanOrEqualTo;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
+import static org.assertj.core.util.IterableUtil.sizeOf;
 import static org.assertj.core.util.Preconditions.checkArgument;
 
+import java.lang.reflect.Array;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -83,6 +87,56 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
   public SELF filteredOn(Predicate<? super ELEMENT> predicate) {
     checkArgument(predicate != null, "The filter predicate should not be null");
     return internalFilteredOn(predicate::test);
+  }
+
+  /**
+   * Verifies that the size of the actual RichIterable is equal to the size of the given iterable.
+   *
+   * @param other the iterable to compare the size of the actual RichIterable with.
+   * @return {@code this} assertion object.
+   * @throws NullPointerException if the given iterable is {@code null}.
+   * @throws AssertionError if the size of the actual RichIterable is not equal to the size of the given iterable.
+   */
+  @Override
+  public SELF hasSameSizeAs(Iterable<?> other) {
+    isNotNull();
+
+    final int otherSize;
+    if (other instanceof RichIterable<?> richIterable) {
+      otherSize = richIterable.size();
+    } else {
+      otherSize = sizeOf(other);
+    }
+
+    int actualSize = actual.size();
+    if (actualSize == otherSize) {
+      return myself;
+    }
+    throw assertionError(shouldHaveSameSizeAs(actual, other, actualSize, otherSize));
+  }
+
+  /**
+   * Verifies that the size of the actual RichIterable matches the size of the given array.
+   *
+   * @param other the array to compare the size of the actual RichIterable with.
+   * @return {@code this} assertion object.
+   * @throws AssertionError if the size of the actual RichIterable does not match the size of the given array or if the given array is {@code null}.
+   */
+  @Override
+  public SELF hasSameSizeAs(Object other) {
+    isNotNull();
+
+    if (!(other != null && other.getClass().isArray())) {
+      throw assertionError(shouldBeAnArray(other));
+    }
+
+    int otherSize = Array.getLength(other);
+    int actualSize = actual.size();
+    if (actualSize == otherSize) {
+      return myself;
+    }
+
+    throw assertionError(shouldHaveSameSizeAs(actual, other, actualSize, otherSize));
   }
 
   /**

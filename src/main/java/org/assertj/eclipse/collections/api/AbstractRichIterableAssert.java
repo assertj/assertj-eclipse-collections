@@ -120,6 +120,7 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
    *
    * @param other the array to compare the size of the actual RichIterable with.
    * @return {@code this} assertion object.
+   * @throws AssertionError if the provided array is {@code null}.
    * @throws AssertionError if the size of the actual RichIterable does not match the size of the given array or if the given array is {@code null}.
    */
   @Override

@@ -16,6 +16,7 @@
 package org.assertj.eclipse.collections.api;
 
 import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
+import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThan.shouldHaveSizeGreaterThan;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThanOrEqualTo.shouldHaveSizeGreaterThanOrEqualTo;
@@ -199,6 +200,20 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
     }
 
     throw assertionError(shouldNotBeEmpty());
+  }
+
+  /**
+   * Verifies that the actual RichIterable is null or empty.
+   *
+   * @throws AssertionError if the actual RichIterable is not null or not empty.
+   */
+  @Override
+  public void isNullOrEmpty() {
+    if (actual == null || actual.isEmpty()) {
+      return;
+    }
+
+    throw assertionError(shouldBeNullOrEmpty(actual));
   }
 
   /**

@@ -20,6 +20,7 @@ import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThan.shouldHaveSizeGreaterThan;
 import static org.assertj.core.error.ShouldHaveSizeGreaterThanOrEqualTo.shouldHaveSizeGreaterThanOrEqualTo;
+import static org.assertj.core.error.ShouldHaveSizeLessThan.shouldHaveSizeLessThan;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 import static org.assertj.core.util.Preconditions.checkArgument;
 
@@ -167,6 +168,34 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
     }
 
     throw assertionError(shouldHaveSizeGreaterThanOrEqualTo(actual, actualSize, boundary));
+  }
+
+  /**
+   * Verifies that the number of values in the actual RichIterable is less than the given boundary.
+   * <p>
+   * Example:
+   * <pre>{@code
+   * // assertion will pass
+   * assertThat(Lists.immutable.of(1, 2, 3)).hasSizeLessThan(4);
+   *
+   * // assertion will fail
+   * assertThat(Lists.immutable.of(1, 2, 3)).hasSizeLessThan(3);
+   * }</pre>
+   *
+   * @param boundary the given value to compare the actual size to.
+   * @return {@code this} assertion object.
+   * @throws AssertionError if the number of values of the actual RichIterable is not less than the boundary.
+   */
+  @Override
+  public SELF hasSizeLessThan(int boundary) {
+    isNotNull();
+
+    int actualSize = actual.size();
+    if (actualSize < boundary) {
+      return myself;
+    }
+
+    throw assertionError(shouldHaveSizeLessThan(actual, actualSize, boundary));
   }
 
   /**

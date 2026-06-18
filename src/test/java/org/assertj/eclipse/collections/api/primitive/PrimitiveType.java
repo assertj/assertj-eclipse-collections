@@ -13,20 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * Test module for AssertJ Eclipse Collections
- */
-open module org.assertj.eclipse.collections.test {
-  exports org.assertj.eclipse.collections.api.list;
-  exports org.assertj.eclipse.collections.api.multimap;
-  exports org.assertj.eclipse.collections.api.primitive;
-  exports org.assertj.eclipse.collections.api.richiterable;
-  exports org.assertj.eclipse.collections.api.stack;
+package org.assertj.eclipse.collections.api.primitive;
 
-  requires org.assertj.eclipse.collections;
-  requires org.assertj.core;
-  requires org.eclipse.collections.api;
-  requires org.eclipse.collections.impl;
-  requires org.junit.jupiter.api;
-  requires org.junit.jupiter.params;
+public enum PrimitiveType {
+  BOOLEAN,
+  BYTE,
+  CHAR,
+  DOUBLE,
+  FLOAT,
+  INT,
+  LONG,
+  SHORT
 }

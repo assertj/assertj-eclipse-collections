@@ -16,6 +16,14 @@
 package org.assertj.eclipse.collections.api;
 
 import org.assertj.core.annotation.CheckReturnValue;
+import org.eclipse.collections.api.BooleanIterable;
+import org.eclipse.collections.api.ByteIterable;
+import org.eclipse.collections.api.CharIterable;
+import org.eclipse.collections.api.DoubleIterable;
+import org.eclipse.collections.api.FloatIterable;
+import org.eclipse.collections.api.IntIterable;
+import org.eclipse.collections.api.LongIterable;
+import org.eclipse.collections.api.ShortIterable;
 import org.eclipse.collections.api.bag.Bag;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.multimap.Multimap;
@@ -26,7 +34,6 @@ import org.eclipse.collections.api.stack.StackIterable;
  * Behavior-driven development style entry point for assertion methods for the Eclipse Collections library. Each method
  * in this class is a static factory for a type-specific assertion object.
  */
-@CheckReturnValue
 public class BDDAssertions extends Assertions {
   /**
    * Creates a new <code>{@link BDDAssertions}</code>.
@@ -42,7 +49,74 @@ public class BDDAssertions extends Assertions {
    * @return the created assertion object.
    * @param <T> The type of the elements in the bag
    */
+  @CheckReturnValue
   public static <T> BagAssert<T> then(Bag<T> actual) {
+    return assertThat(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link BooleanIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static BooleanIterableAssert then(BooleanIterable actual) {
+    return assertThat(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link ByteIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static ByteIterableAssert then(ByteIterable actual) {
+    return assertThat(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link CharIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static CharIterableAssert then(CharIterable actual) {
+    return assertThat(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link DoubleIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static DoubleIterableAssert then(DoubleIterable actual) {
+    return assertThat(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link FloatIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static FloatIterableAssert then(FloatIterable actual) {
+    return assertThat(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link IntIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static IntIterableAssert then(IntIterable actual) {
     return assertThat(actual);
   }
 
@@ -53,7 +127,19 @@ public class BDDAssertions extends Assertions {
    * @return the created assertion object.
    * @param <T> The type of the elements in the list
    */
+  @CheckReturnValue
   public static <T> ListIterableAssert<T> then(ListIterable<T> actual) {
+    return assertThat(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link LongIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static LongIterableAssert then(LongIterable actual) {
     return assertThat(actual);
   }
 
@@ -65,6 +151,7 @@ public class BDDAssertions extends Assertions {
    * @param <KEY> The type of keys in the BagMultimap
    * @param <VALUE> The type of values in the BagMultimap
    */
+  @CheckReturnValue
   public static <KEY, VALUE> MultimapAssert<KEY, VALUE> then(Multimap<KEY, VALUE> actual) {
     return assertThat(actual);
   }
@@ -76,7 +163,19 @@ public class BDDAssertions extends Assertions {
    * @return the created assertion object.
    * @param <T> The type of the elements in the set
    */
+  @CheckReturnValue
   public static <T> SetIterableAssert<T> then(SetIterable<T> actual) {
+    return assertThat(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link ShortIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static ShortIterableAssert then(ShortIterable actual) {
     return assertThat(actual);
   }
 
@@ -87,6 +186,7 @@ public class BDDAssertions extends Assertions {
    * @return the created assertion object.
    * @param <T> The type of the elements in the stack
    */
+  @CheckReturnValue
   public static <T> StackIterableAssert<T> then(StackIterable<T> actual) {
     return assertThat(actual);
   }

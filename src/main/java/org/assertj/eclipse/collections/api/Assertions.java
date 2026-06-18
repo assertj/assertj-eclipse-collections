@@ -16,6 +16,14 @@
 package org.assertj.eclipse.collections.api;
 
 import org.assertj.core.annotation.CheckReturnValue;
+import org.eclipse.collections.api.BooleanIterable;
+import org.eclipse.collections.api.ByteIterable;
+import org.eclipse.collections.api.CharIterable;
+import org.eclipse.collections.api.DoubleIterable;
+import org.eclipse.collections.api.FloatIterable;
+import org.eclipse.collections.api.IntIterable;
+import org.eclipse.collections.api.LongIterable;
+import org.eclipse.collections.api.ShortIterable;
 import org.eclipse.collections.api.bag.Bag;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.multimap.Multimap;
@@ -26,7 +34,6 @@ import org.eclipse.collections.api.stack.StackIterable;
  * Entry point for assertion methods for the Eclipse Collections library. Each method in this class is a static factory
  * for a type-specific assertion object.
  */
-@CheckReturnValue
 public class Assertions {
   /**
    * Creates a new {@link Assertions}.
@@ -42,8 +49,75 @@ public class Assertions {
    * @return the created assertion object.
    * @param <T> The type of the elements in the bag
    */
+  @CheckReturnValue
   public static <T> BagAssert<T> assertThat(Bag<T> actual) {
     return new BagAssert<>(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link BooleanIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static BooleanIterableAssert assertThat(BooleanIterable actual) {
+    return new BooleanIterableAssert(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link ByteIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static ByteIterableAssert assertThat(ByteIterable actual) {
+    return new ByteIterableAssert(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link CharIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static CharIterableAssert assertThat(CharIterable actual) {
+    return new CharIterableAssert(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link DoubleIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static DoubleIterableAssert assertThat(DoubleIterable actual) {
+    return new DoubleIterableAssert(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link FloatIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static FloatIterableAssert assertThat(FloatIterable actual) {
+    return new FloatIterableAssert(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link IntIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static IntIterableAssert assertThat(IntIterable actual) {
+    return new IntIterableAssert(actual);
   }
 
   /**
@@ -53,8 +127,20 @@ public class Assertions {
    * @return the created assertion object.
    * @param <T> The type of the elements in the list
    */
+  @CheckReturnValue
   public static <T> ListIterableAssert<T> assertThat(ListIterable<T> actual) {
     return new ListIterableAssert<>(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link LongIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static LongIterableAssert assertThat(LongIterable actual) {
+    return new LongIterableAssert(actual);
   }
 
   /**
@@ -65,6 +151,7 @@ public class Assertions {
    * @param <KEY> The type of keys in the BagMultimap
    * @param <VALUE> The type of values in the BagMultimap
    */
+  @CheckReturnValue
   public static <KEY, VALUE> MultimapAssert<KEY, VALUE> assertThat(Multimap<KEY, VALUE> actual) {
     return new MultimapAssert<>(actual);
   }
@@ -76,8 +163,20 @@ public class Assertions {
    * @return the created assertion object.
    * @param <T> The type of the elements in the set
    */
+  @CheckReturnValue
   public static <T> SetIterableAssert<T> assertThat(SetIterable<T> actual) {
     return new SetIterableAssert<>(actual);
+  }
+
+  /**
+   * Creates a new instance of {@link ShortIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   */
+  @CheckReturnValue
+  public static ShortIterableAssert assertThat(ShortIterable actual) {
+    return new ShortIterableAssert(actual);
   }
 
   /**
@@ -87,6 +186,7 @@ public class Assertions {
    * @return the created assertion object.
    * @param <T> The type of the elements in the stack
    */
+  @CheckReturnValue
   public static <T> StackIterableAssert<T> assertThat(StackIterable<T> actual) {
     return new StackIterableAssert<>(actual);
   }

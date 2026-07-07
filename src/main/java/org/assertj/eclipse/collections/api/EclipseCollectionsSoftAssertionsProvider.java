@@ -24,6 +24,7 @@ import org.eclipse.collections.api.DoubleIterable;
 import org.eclipse.collections.api.FloatIterable;
 import org.eclipse.collections.api.IntIterable;
 import org.eclipse.collections.api.LongIterable;
+import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.ShortIterable;
 import org.eclipse.collections.api.bag.Bag;
 import org.eclipse.collections.api.list.ListIterable;
@@ -147,6 +148,18 @@ public interface EclipseCollectionsSoftAssertionsProvider extends SoftAssertions
    */
   @CheckReturnValue
   default <KEY, VALUE> MultimapAssert<KEY, VALUE> assertThat(Multimap<KEY, VALUE> actual) {
+    return soft(Assertions.assertThat(actual));
+  }
+
+  /**
+   * Creates a new instance of {@link RichIterableAssert}.
+   *
+   * @param actual the actual value
+   * @return the created assertion object
+   * @param <T> The type of the elements in the RichIterable
+   */
+  @CheckReturnValue
+  default <T> RichIterableAssert<T> assertThat(RichIterable<? extends T> actual) {
     return soft(Assertions.assertThat(actual));
   }
 

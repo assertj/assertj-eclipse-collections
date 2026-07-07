@@ -21,8 +21,10 @@ import java.util.stream.Stream;
 
 import org.assertj.eclipse.collections.api.BagAssert;
 import org.assertj.eclipse.collections.api.ListIterableAssert;
+import org.assertj.eclipse.collections.api.RichIterableAssert;
 import org.assertj.eclipse.collections.api.SetIterableAssert;
 import org.assertj.eclipse.collections.api.StackIterableAssert;
+import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.factory.Bags;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.factory.Sets;
@@ -36,10 +38,21 @@ class RichIterableArgumentsProvider implements ArgumentsProvider {
   @Override
   public Stream<? extends Arguments> provideArguments(ParameterDeclarations parameters, ExtensionContext context) {
     return Stream.of(
+      arguments(createRichIterableAssert()),
       arguments(createBagAssert()),
       arguments(createListIterableAssert()),
       arguments(createSetIterableAssert()),
       arguments(createStackIterableAssert())
+    );
+  }
+
+  private static RichIterableAssertFactory<Object> createRichIterableAssert() {
+    return new RichIterableAssertFactory<>(
+      "RichIterable",
+      elements -> new RichIterableAssert<>(Lists.immutable.of(elements)),
+      () -> new RichIterableAssert<>(Lists.immutable.empty()),
+      () -> new RichIterableAssert<>(null),
+      (softAssertions, elements) -> softAssertions.assertThat((RichIterable<Object>) Lists.immutable.of(elements))
     );
   }
 

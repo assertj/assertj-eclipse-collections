@@ -23,6 +23,7 @@ import org.eclipse.collections.api.DoubleIterable;
 import org.eclipse.collections.api.FloatIterable;
 import org.eclipse.collections.api.IntIterable;
 import org.eclipse.collections.api.LongIterable;
+import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.ShortIterable;
 import org.eclipse.collections.api.bag.Bag;
 import org.eclipse.collections.api.list.ListIterable;
@@ -50,7 +51,7 @@ public class BDDAssertions extends Assertions {
    * @param <T> The type of the elements in the bag
    */
   @CheckReturnValue
-  public static <T> BagAssert<T> then(Bag<T> actual) {
+  public static <T> BagAssert<T> then(Bag<? extends T> actual) {
     return assertThat(actual);
   }
 
@@ -128,7 +129,7 @@ public class BDDAssertions extends Assertions {
    * @param <T> The type of the elements in the list
    */
   @CheckReturnValue
-  public static <T> ListIterableAssert<T> then(ListIterable<T> actual) {
+  public static <T> ListIterableAssert<T> then(ListIterable<? extends T> actual) {
     return assertThat(actual);
   }
 
@@ -157,6 +158,18 @@ public class BDDAssertions extends Assertions {
   }
 
   /**
+   * Creates a new instance of {@link RichIterableAssert}.
+   *
+   * @param actual the actual value.
+   * @return the created assertion object.
+   * @param <T> The type of the elements in the iterable
+   */
+  @CheckReturnValue
+  public static <T> RichIterableAssert<T> then(RichIterable<? extends T> actual) {
+    return assertThat(actual);
+  }
+
+  /**
    * Creates a new instance of {@link SetIterableAssert}.
    *
    * @param actual the actual value.
@@ -164,7 +177,7 @@ public class BDDAssertions extends Assertions {
    * @param <T> The type of the elements in the set
    */
   @CheckReturnValue
-  public static <T> SetIterableAssert<T> then(SetIterable<T> actual) {
+  public static <T> SetIterableAssert<T> then(SetIterable<? extends T> actual) {
     return assertThat(actual);
   }
 
@@ -187,7 +200,7 @@ public class BDDAssertions extends Assertions {
    * @param <T> The type of the elements in the stack
    */
   @CheckReturnValue
-  public static <T> StackIterableAssert<T> then(StackIterable<T> actual) {
+  public static <T> StackIterableAssert<T> then(StackIterable<? extends T> actual) {
     return assertThat(actual);
   }
 }

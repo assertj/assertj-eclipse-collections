@@ -15,6 +15,8 @@
  */
 package org.assertj.eclipse.collections.api;
 
+import static java.util.Objects.requireNonNull;
+import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ShouldBeAnArray.shouldBeAnArray;
 import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
@@ -26,8 +28,8 @@ import static org.assertj.core.error.ShouldHaveSizeGreaterThanOrEqualTo.shouldHa
 import static org.assertj.core.error.ShouldHaveSizeLessThan.shouldHaveSizeLessThan;
 import static org.assertj.core.error.ShouldHaveSizeLessThanOrEqualTo.shouldHaveSizeLessThanOrEqualTo;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
-import static org.assertj.core.util.IterableUtil.sizeOf;
 import static org.assertj.core.util.Preconditions.checkArgument;
+import static org.assertj.eclipse.collections.util.RichIterableUtil.sizeOf;
 
 import java.lang.reflect.Array;
 import java.util.Objects;
@@ -37,7 +39,9 @@ import java.util.function.Predicate;
 import org.assertj.core.annotation.CheckReturnValue;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.AbstractIterableAssert;
+import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.RichIterable;
+import org.eclipse.collections.api.list.ImmutableList;
 
 /**
  * Base class for implementations of Eclipse Collections {@link RichIterable} assertions.
@@ -59,6 +63,29 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
 
   protected AbstractRichIterableAssert(ACTUAL actual, Class<?> selfType) {
     super(actual, selfType);
+  }
+
+  @Override
+  public SELF allMatch(Predicate<? super ELEMENT> predicate) {
+    return executeAssertion(() -> assertAllMatch(predicate, PredicateDescription.GIVEN));
+  }
+
+  @Override
+  public SELF allMatch(Predicate<? super ELEMENT> predicate, String predicateDescription) {
+    return executeAssertion(() -> assertAllMatch(predicate, new PredicateDescription(predicateDescription)));
+  }
+
+  private void assertAllMatch(Predicate<? super ELEMENT> predicate, PredicateDescription predicateDescription) {
+    isNotNull();
+    requireNonNull(predicate, "The predicate to evaluate should not be null");
+    isNotEmpty();
+
+    ImmutableList<? extends ELEMENT> nonMatches = actual.reject(predicate::test).toImmutableList();
+    if (nonMatches.isEmpty()) {
+      return;
+    }
+
+    throw assertionError(elementsShouldMatch(actual, nonMatches.size() == 1 ? nonMatches.getFirst() : nonMatches, predicateDescription));
   }
 
   @Override
@@ -103,20 +130,16 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
    */
   @Override
   public SELF hasSameSizeAs(Iterable<?> other) {
-    isNotNull();
+    return executeAssertion(() -> {
+      isNotNull();
 
-    final int otherSize;
-    if (other instanceof RichIterable<?> richIterable) {
-      otherSize = richIterable.size();
-    } else {
-      otherSize = sizeOf(other);
-    }
-
-    int actualSize = actual.size();
-    if (actualSize == otherSize) {
-      return myself;
-    }
-    throw assertionError(shouldHaveSameSizeAs(actual, other, actualSize, otherSize));
+      int otherSize = sizeOf(other);
+      int actualSize = actual.size();
+      if (actualSize == otherSize) {
+        return;
+      }
+      throw assertionError(shouldHaveSameSizeAs(actual, other, actualSize, otherSize));
+    });
   }
 
   /**
@@ -129,19 +152,21 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
    */
   @Override
   public SELF hasSameSizeAs(Object other) {
-    isNotNull();
+    return executeAssertion(() -> {
+      isNotNull();
 
-    if (!(other != null && other.getClass().isArray())) {
-      throw assertionError(shouldBeAnArray(other));
-    }
+      if (!(other != null && other.getClass().isArray())) {
+        throw assertionError(shouldBeAnArray(other));
+      }
 
-    int otherSize = Array.getLength(other);
-    int actualSize = actual.size();
-    if (actualSize == otherSize) {
-      return myself;
-    }
+      int otherSize = Array.getLength(other);
+      int actualSize = actual.size();
+      if (actualSize == otherSize) {
+        return;
+      }
 
-    throw assertionError(shouldHaveSameSizeAs(actual, other, actualSize, otherSize));
+      throw assertionError(shouldHaveSameSizeAs(actual, other, actualSize, otherSize));
+    });
   }
 
   /**
@@ -164,14 +189,16 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
    */
   @Override
   public SELF hasSize(int expected) {
-    isNotNull();
+    return executeAssertion(() -> {
+      isNotNull();
 
-    int actualSize = actual.size();
-    if (actualSize == expected) {
-      return myself;
-    }
+      int actualSize = actual.size();
+      if (actualSize == expected) {
+        return;
+      }
 
-    throw assertionError(shouldHaveSize(actual, actualSize, expected));
+      throw assertionError(shouldHaveSize(actual, actualSize, expected));
+    });
   }
 
   /**
@@ -193,20 +220,22 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
    */
   @Override
   public SELF hasSizeBetween(int lowerBoundary, int higherBoundary) {
-    isNotNull();
+    return executeAssertion(() -> {
+      isNotNull();
 
-    if (!(higherBoundary >= lowerBoundary)) {
-      throw new IllegalArgumentException("The higher boundary <%s> must be greater than the lower boundary <%s>.".formatted(
-        higherBoundary,
-        lowerBoundary));
-    }
+      if (!(higherBoundary >= lowerBoundary)) {
+        throw new IllegalArgumentException("The higher boundary <%s> must be greater than the lower boundary <%s>.".formatted(
+          higherBoundary,
+          lowerBoundary));
+      }
 
-    int actualSize = actual.size();
-    if (actualSize >= lowerBoundary && actualSize <= higherBoundary) {
-      return myself;
-    }
+      int actualSize = actual.size();
+      if (actualSize >= lowerBoundary && actualSize <= higherBoundary) {
+        return;
+      }
 
-    throw assertionError(shouldHaveSizeBetween(actual, actualSize, lowerBoundary, higherBoundary));
+      throw assertionError(shouldHaveSizeBetween(actual, actualSize, lowerBoundary, higherBoundary));
+    });
   }
 
   /**
@@ -226,14 +255,16 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
    */
   @Override
   public SELF hasSizeGreaterThan(int boundary) {
-    isNotNull();
+    return executeAssertion(() -> {
+      isNotNull();
 
-    int actualSize = actual.size();
-    if (actualSize > boundary) {
-      return myself;
-    }
+      int actualSize = actual.size();
+      if (actualSize > boundary) {
+        return;
+      }
 
-    throw assertionError(shouldHaveSizeGreaterThan(actual, actualSize, boundary));
+      throw assertionError(shouldHaveSizeGreaterThan(actual, actualSize, boundary));
+    });
   }
 
   /**
@@ -255,14 +286,16 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
    */
   @Override
   public SELF hasSizeGreaterThanOrEqualTo(int boundary) {
-    isNotNull();
+    return executeAssertion(() -> {
+      isNotNull();
 
-    int actualSize = actual.size();
-    if (actualSize >= boundary) {
-      return myself;
-    }
+      int actualSize = actual.size();
+      if (actualSize >= boundary) {
+        return;
+      }
 
-    throw assertionError(shouldHaveSizeGreaterThanOrEqualTo(actual, actualSize, boundary));
+      throw assertionError(shouldHaveSizeGreaterThanOrEqualTo(actual, actualSize, boundary));
+    });
   }
 
   /**
@@ -283,14 +316,16 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
    */
   @Override
   public SELF hasSizeLessThan(int boundary) {
-    isNotNull();
+    return executeAssertion(() -> {
+      isNotNull();
 
-    int actualSize = actual.size();
-    if (actualSize < boundary) {
-      return myself;
-    }
+      int actualSize = actual.size();
+      if (actualSize < boundary) {
+        return;
+      }
 
-    throw assertionError(shouldHaveSizeLessThan(actual, actualSize, boundary));
+      throw assertionError(shouldHaveSizeLessThan(actual, actualSize, boundary));
+    });
   }
 
   /**
@@ -312,14 +347,16 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
    */
   @Override
   public SELF hasSizeLessThanOrEqualTo(int boundary) {
-    isNotNull();
+    return executeAssertion(() -> {
+      isNotNull();
 
-    int actualSize = actual.size();
-    if (actualSize <= boundary) {
-      return myself;
-    }
+      int actualSize = actual.size();
+      if (actualSize <= boundary) {
+        return;
+      }
 
-    throw assertionError(shouldHaveSizeLessThanOrEqualTo(actual, actualSize, boundary));
+      throw assertionError(shouldHaveSizeLessThanOrEqualTo(actual, actualSize, boundary));
+    });
   }
 
   /**
@@ -329,13 +366,15 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
    */
   @Override
   public void isEmpty() {
-    isNotNull();
+    executeAssertion(() -> {
+      isNotNull();
 
-    if (actual.isEmpty()) {
-      return;
-    }
+      if (actual.isEmpty()) {
+        return;
+      }
 
-    throw assertionError(shouldBeEmpty(actual));
+      throw assertionError(shouldBeEmpty(actual));
+    });
   }
 
   /**
@@ -346,13 +385,15 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
    */
   @Override
   public SELF isNotEmpty() {
-    isNotNull();
+    return executeAssertion(() -> {
+      isNotNull();
 
-    if (actual.notEmpty()) {
-      return myself;
-    }
+      if (actual.notEmpty()) {
+        return;
+      }
 
-    throw assertionError(shouldNotBeEmpty());
+      throw assertionError(shouldNotBeEmpty());
+    });
   }
 
   /**
@@ -362,11 +403,13 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
    */
   @Override
   public void isNullOrEmpty() {
-    if (actual == null || actual.isEmpty()) {
-      return;
-    }
+    executeAssertion(() -> {
+      if (actual == null || actual.isEmpty()) {
+        return;
+      }
 
-    throw assertionError(shouldBeNullOrEmpty(actual));
+      throw assertionError(shouldBeNullOrEmpty(actual));
+    });
   }
 
   /**

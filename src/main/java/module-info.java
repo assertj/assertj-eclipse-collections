@@ -19,8 +19,9 @@
 module org.assertj.eclipse.collections {
   exports org.assertj.eclipse.collections.api;
   exports org.assertj.eclipse.collections.error;
+  exports org.assertj.eclipse.collections.util;
 
-  requires org.assertj.core;
-  requires org.eclipse.collections.api;
+  requires transitive org.assertj.core;
+  requires transitive org.eclipse.collections.api;
   requires org.eclipse.collections.impl;
 }

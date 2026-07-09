@@ -15,15 +15,41 @@
  */
 package org.assertj.eclipse.collections.api;
 
+import static java.util.Objects.requireNonNull;
+import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 
+import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.ByteIterable;
+import org.eclipse.collections.api.block.predicate.primitive.BytePredicate;
 import org.eclipse.collections.api.factory.primitive.ByteLists;
+import org.eclipse.collections.api.list.primitive.ByteList;
 
 public class ByteIterableAssert extends AbstractPrimitiveIterableAssert<ByteIterableAssert, ByteIterable> {
 
   public ByteIterableAssert(ByteIterable actual) {
     super(actual, ByteIterableAssert.class);
+  }
+
+  public ByteIterableAssert allMatch(BytePredicate predicate) {
+    return executeAssertion(() -> assertAllMatch(predicate, PredicateDescription.GIVEN));
+  }
+
+  public ByteIterableAssert allMatch(BytePredicate predicate, String predicateDescription) {
+    return executeAssertion(() -> assertAllMatch(predicate, new PredicateDescription(predicateDescription)));
+  }
+
+  private void assertAllMatch(BytePredicate predicate, PredicateDescription predicateDescription) {
+    isNotNull();
+    requireNonNull(predicate, "The predicate to evaluate should not be null");
+    isNotEmpty();
+
+    ByteList nonMatches = actual.reject(predicate).toList();
+    if (nonMatches.isEmpty()) {
+      return;
+    }
+
+    throw assertionError(elementsShouldMatch(actual, nonMatches.size() == 1 ? nonMatches.getFirst() : nonMatches, predicateDescription));
   }
 
   public ByteIterableAssert contains(byte... values) {

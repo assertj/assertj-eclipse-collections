@@ -15,14 +15,41 @@
  */
 package org.assertj.eclipse.collections.api;
 
+import static java.util.Objects.requireNonNull;
+import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 
+import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.LongIterable;
 import org.eclipse.collections.api.factory.primitive.LongLists;
+import org.eclipse.collections.api.list.primitive.LongList;
+
+import java.util.function.LongPredicate;
 
 public class LongIterableAssert extends AbstractPrimitiveIterableAssert<LongIterableAssert, LongIterable> {
   public LongIterableAssert(LongIterable actual) {
     super(actual, LongIterableAssert.class);
+  }
+
+  public LongIterableAssert allMatch(LongPredicate predicate) {
+    return executeAssertion(() -> assertAllMatch(predicate, PredicateDescription.GIVEN));
+  }
+
+  public LongIterableAssert allMatch(LongPredicate predicate, String predicateDescription) {
+    return executeAssertion(() -> assertAllMatch(predicate, new PredicateDescription(predicateDescription)));
+  }
+
+  private void assertAllMatch(LongPredicate predicate, PredicateDescription predicateDescription) {
+    isNotNull();
+    requireNonNull(predicate, "The predicate to evaluate should not be null");
+    isNotEmpty();
+
+    LongList nonMatches = actual.reject(predicate::test).toList();
+    if (nonMatches.isEmpty()) {
+      return;
+    }
+
+    throw assertionError(elementsShouldMatch(actual, nonMatches.size() == 1 ? nonMatches.getFirst() : nonMatches, predicateDescription));
   }
 
   public LongIterableAssert contains(long... values) {

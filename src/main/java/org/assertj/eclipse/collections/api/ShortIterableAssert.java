@@ -15,14 +15,40 @@
  */
 package org.assertj.eclipse.collections.api;
 
+import static java.util.Objects.requireNonNull;
+import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 
+import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.ShortIterable;
+import org.eclipse.collections.api.block.predicate.primitive.ShortPredicate;
 import org.eclipse.collections.api.factory.primitive.ShortLists;
+import org.eclipse.collections.api.list.primitive.ShortList;
 
 public class ShortIterableAssert extends AbstractPrimitiveIterableAssert<ShortIterableAssert, ShortIterable> {
   public ShortIterableAssert(ShortIterable actual) {
     super(actual, ShortIterableAssert.class);
+  }
+
+  public ShortIterableAssert allMatch(ShortPredicate predicate) {
+    return executeAssertion(() -> assertAllMatch(predicate, PredicateDescription.GIVEN));
+  }
+
+  public ShortIterableAssert allMatch(ShortPredicate predicate, String predicateDescription) {
+    return executeAssertion(() -> assertAllMatch(predicate, new PredicateDescription(predicateDescription)));
+  }
+
+  private void assertAllMatch(ShortPredicate predicate, PredicateDescription predicateDescription) {
+    isNotNull();
+    requireNonNull(predicate, "The predicate to evaluate should not be null");
+    isNotEmpty();
+
+    ShortList nonMatches = actual.reject(predicate).toList();
+    if (nonMatches.isEmpty()) {
+      return;
+    }
+
+    throw assertionError(elementsShouldMatch(actual, nonMatches.size() == 1 ? nonMatches.getFirst() : nonMatches, predicateDescription));
   }
 
   public ShortIterableAssert contains(short... values) {

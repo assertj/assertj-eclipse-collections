@@ -15,14 +15,40 @@
  */
 package org.assertj.eclipse.collections.api;
 
+import static java.util.Objects.requireNonNull;
+import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 
+import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.BooleanIterable;
+import org.eclipse.collections.api.block.predicate.primitive.BooleanPredicate;
 import org.eclipse.collections.api.factory.primitive.BooleanLists;
+import org.eclipse.collections.api.list.primitive.BooleanList;
 
 public class BooleanIterableAssert extends AbstractPrimitiveIterableAssert<BooleanIterableAssert, BooleanIterable> {
   public BooleanIterableAssert(BooleanIterable actual) {
     super(actual, BooleanIterableAssert.class);
+  }
+
+  public BooleanIterableAssert allMatch(BooleanPredicate predicate) {
+    return executeAssertion(() -> assertAllMatch(predicate, PredicateDescription.GIVEN));
+  }
+
+  public BooleanIterableAssert allMatch(BooleanPredicate predicate, String predicateDescription) {
+    return executeAssertion(() -> assertAllMatch(predicate, new PredicateDescription(predicateDescription)));
+  }
+
+  private void assertAllMatch(BooleanPredicate predicate, PredicateDescription predicateDescription) {
+    isNotNull();
+    requireNonNull(predicate, "The predicate to evaluate should not be null");
+    isNotEmpty();
+
+    BooleanList nonMatches = actual.reject(predicate).toList();
+    if (nonMatches.isEmpty()) {
+      return;
+    }
+
+    throw assertionError(elementsShouldMatch(actual, nonMatches.size() == 1 ? nonMatches.getFirst() : nonMatches, predicateDescription));
   }
 
   public BooleanIterableAssert contains(boolean... values) {

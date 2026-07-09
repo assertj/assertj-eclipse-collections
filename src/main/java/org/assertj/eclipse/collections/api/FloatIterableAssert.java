@@ -15,14 +15,40 @@
  */
 package org.assertj.eclipse.collections.api;
 
+import static java.util.Objects.requireNonNull;
+import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 
+import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.FloatIterable;
+import org.eclipse.collections.api.block.predicate.primitive.FloatPredicate;
 import org.eclipse.collections.api.factory.primitive.FloatLists;
+import org.eclipse.collections.api.list.primitive.FloatList;
 
 public class FloatIterableAssert extends AbstractPrimitiveIterableAssert<FloatIterableAssert, FloatIterable> {
   public FloatIterableAssert(FloatIterable actual) {
     super(actual, FloatIterableAssert.class);
+  }
+
+  public FloatIterableAssert allMatch(FloatPredicate predicate) {
+    return executeAssertion(() -> assertAllMatch(predicate, PredicateDescription.GIVEN));
+  }
+
+  public FloatIterableAssert allMatch(FloatPredicate predicate, String predicateDescription) {
+    return executeAssertion(() -> assertAllMatch(predicate, new PredicateDescription(predicateDescription)));
+  }
+
+  private void assertAllMatch(FloatPredicate predicate, PredicateDescription predicateDescription) {
+    isNotNull();
+    requireNonNull(predicate, "The predicate to evaluate should not be null");
+    isNotEmpty();
+
+    FloatList nonMatches = actual.reject(predicate).toList();
+    if (nonMatches.isEmpty()) {
+      return;
+    }
+
+    throw assertionError(elementsShouldMatch(actual, nonMatches.size() == 1 ? nonMatches.getFirst() : nonMatches, predicateDescription));
   }
 
   public FloatIterableAssert contains(float... values) {

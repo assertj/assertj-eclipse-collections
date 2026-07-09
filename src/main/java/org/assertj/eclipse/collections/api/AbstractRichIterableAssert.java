@@ -20,6 +20,7 @@ import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ShouldBeAnArray.shouldBeAnArray;
 import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
+import static org.assertj.core.error.ShouldContain.shouldContain;
 import static org.assertj.core.error.ShouldHaveSameSizeAs.shouldHaveSameSizeAs;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldHaveSizeBetween.shouldHaveSizeBetween;
@@ -42,6 +43,8 @@ import org.assertj.core.api.AbstractIterableAssert;
 import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
 
 /**
  * Base class for implementations of Eclipse Collections {@link RichIterable} assertions.
@@ -86,6 +89,24 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
     }
 
     throw assertionError(elementsShouldMatch(actual, nonMatches.size() == 1 ? nonMatches.getFirst() : nonMatches, predicateDescription));
+  }
+
+  @Override
+  protected void assertContains(ELEMENT[] values) {
+    isNotNull();
+    requireNonNull(values, "The array of values to look for should not be null");
+
+    if (actual.isEmpty() && values.length == 0) {
+      return;
+    }
+
+    ArrayAdapter<ELEMENT> valuesList = ArrayAdapter.adapt(values);
+    MutableList<ELEMENT> notFound = valuesList.reject(actual::contains);
+    if (notFound.isEmpty()) {
+      return;
+    }
+
+    throw assertionError(shouldContain(actual, valuesList, notFound)); // TODO: ComparisonStrategy???
   }
 
   @Override

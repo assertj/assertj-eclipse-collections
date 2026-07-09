@@ -15,14 +15,41 @@
  */
 package org.assertj.eclipse.collections.api;
 
+import static java.util.Objects.requireNonNull;
+import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 
+import java.util.function.DoublePredicate;
+
+import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.DoubleIterable;
 import org.eclipse.collections.api.factory.primitive.DoubleLists;
+import org.eclipse.collections.api.list.primitive.DoubleList;
 
 public class DoubleIterableAssert extends AbstractPrimitiveIterableAssert<DoubleIterableAssert, DoubleIterable> {
   public DoubleIterableAssert(DoubleIterable actual) {
     super(actual, DoubleIterableAssert.class);
+  }
+
+  public DoubleIterableAssert allMatch(DoublePredicate predicate) {
+    return executeAssertion(() -> assertAllMatch(predicate, PredicateDescription.GIVEN));
+  }
+
+  public DoubleIterableAssert allMatch(DoublePredicate predicate, String predicateDescription) {
+    return executeAssertion(() -> assertAllMatch(predicate, new PredicateDescription(predicateDescription)));
+  }
+
+  private void assertAllMatch(DoublePredicate predicate, PredicateDescription predicateDescription) {
+    isNotNull();
+    requireNonNull(predicate, "The predicate to evaluate should not be null");
+    isNotEmpty();
+
+    DoubleList nonMatches = actual.reject(predicate::test).toList();
+    if (nonMatches.isEmpty()) {
+      return;
+    }
+
+    throw assertionError(elementsShouldMatch(actual, nonMatches.size() == 1 ? nonMatches.getFirst() : nonMatches, predicateDescription));
   }
 
   public DoubleIterableAssert contains(double... values) {

@@ -15,14 +15,41 @@
  */
 package org.assertj.eclipse.collections.api;
 
+import static java.util.Objects.requireNonNull;
+import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 
+import java.util.function.IntPredicate;
+
+import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.IntIterable;
 import org.eclipse.collections.api.factory.primitive.IntLists;
+import org.eclipse.collections.api.list.primitive.IntList;
 
 public class IntIterableAssert extends AbstractPrimitiveIterableAssert<IntIterableAssert, IntIterable> {
   public IntIterableAssert(IntIterable actual) {
     super(actual, IntIterableAssert.class);
+  }
+
+  public IntIterableAssert allMatch(IntPredicate predicate) {
+    return executeAssertion(() -> assertAllMatch(predicate, PredicateDescription.GIVEN));
+  }
+
+  public IntIterableAssert allMatch(IntPredicate predicate, String predicateDescription) {
+    return executeAssertion(() -> assertAllMatch(predicate, new PredicateDescription(predicateDescription)));
+  }
+
+  private void assertAllMatch(IntPredicate predicate, PredicateDescription predicateDescription) {
+    isNotNull();
+    requireNonNull(predicate, "The predicate to evaluate should not be null");
+    isNotEmpty();
+
+    IntList nonMatches = actual.reject(predicate::test).toList();
+    if (nonMatches.isEmpty()) {
+      return;
+    }
+
+    throw assertionError(elementsShouldMatch(actual, nonMatches.size() == 1 ? nonMatches.getFirst() : nonMatches, predicateDescription));
   }
 
   public IntIterableAssert contains(int... values) {

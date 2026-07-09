@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.assertj.eclipse.collections.api.SoftAssertions;
 import org.eclipse.collections.api.factory.Lists;
+import org.eclipse.collections.api.factory.primitive.IntLists;
 
 class AbstractRichIterableAssert_HasSameSizeAs_Test {
 
@@ -98,5 +99,30 @@ class AbstractRichIterableAssert_HasSameSizeAs_Test {
   @RichIterableParameterizedTest
   void softAssertionPassesArray(RichIterableAssertFactory<String> assertFactory) {
     SoftAssertions.assertSoftly(softly -> assertFactory.softlyFromElements(softly, "TOS", "TNG", "DS9", "VOY", "ENT").hasSameSizeAs(new String[]{"a", "b", "c", "d", "e"}));
+  }
+
+  @RichIterableParameterizedTest
+  void passesPrimitiveIterable(RichIterableAssertFactory<String> assertFactory) {
+    assertThatNoException().isThrownBy(() ->
+      assertFactory.fromElements("TOS", "TNG", "DS9", "VOY", "ENT").hasSameSizeAs(IntLists.immutable.of(1, 2, 3, 4, 5)));
+  }
+
+  @RichIterableParameterizedTest
+  void failsPrimitiveIterableDifferentSize(RichIterableAssertFactory<String> assertFactory) {
+    assertThatExceptionOfType(AssertionError.class)
+      .isThrownBy(() -> assertFactory.fromElements("TOS", "TNG", "DS9", "VOY", "ENT").hasSameSizeAs(IntLists.immutable.of(1, 2, 3)))
+      .withMessageContaining("Actual and expected should have same size but actual size is:");
+  }
+
+  @RichIterableParameterizedTest
+  void failsPrimitiveIterableNullInput(RichIterableAssertFactory<String> assertFactory) {
+    assertThatExceptionOfType(AssertionError.class)
+      .isThrownBy(() -> assertFactory.fromNull().hasSameSizeAs(IntLists.immutable.of(1, 2, 3, 4, 5)))
+      .withMessageContaining("Expecting actual not to be null");
+  }
+
+  @RichIterableParameterizedTest
+  void softAssertionPassesPrimitiveIterable(RichIterableAssertFactory<String> assertFactory) {
+    SoftAssertions.assertSoftly(softly -> assertFactory.softlyFromElements(softly, "TOS", "TNG", "DS9", "VOY", "ENT").hasSameSizeAs(IntLists.immutable.of(1, 2, 3, 4, 5)));
   }
 }

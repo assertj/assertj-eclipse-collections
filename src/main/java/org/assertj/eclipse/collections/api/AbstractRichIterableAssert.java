@@ -41,6 +41,7 @@ import org.assertj.core.annotation.CheckReturnValue;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.AbstractIterableAssert;
 import org.assertj.core.presentation.PredicateDescription;
+import org.eclipse.collections.api.PrimitiveIterable;
 import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -182,6 +183,28 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
 
       int otherSize = Array.getLength(other);
       int actualSize = actual.size();
+      if (actualSize == otherSize) {
+        return;
+      }
+
+      throw assertionError(shouldHaveSameSizeAs(actual, other, actualSize, otherSize));
+    });
+  }
+
+  /**
+   * Verifies that the actual RichIterable matches the size of the given primitive iterable.
+   *
+   * @param other the primitive iterable to compare size with
+   * @return {@code this} assertion object
+   * @throws AssertionError if the actual RichIterable is {@code null}
+   * @throws AssertionError if the actual RichIterable does not have the same size as the given primitive iterable
+   */
+  public SELF hasSameSizeAs(PrimitiveIterable other) {
+    return executeAssertion(() -> {
+      isNotNull();
+
+      int actualSize = actual.size();
+      int otherSize = sizeOf(other);
       if (actualSize == otherSize) {
         return;
       }

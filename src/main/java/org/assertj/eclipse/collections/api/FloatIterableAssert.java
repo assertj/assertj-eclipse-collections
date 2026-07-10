@@ -17,11 +17,17 @@ package org.assertj.eclipse.collections.api;
 
 import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
+import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 
+import java.util.Optional;
+
+import org.assertj.core.error.UnsatisfiedRequirement;
 import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.FloatIterable;
+import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.block.predicate.primitive.FloatPredicate;
+import org.eclipse.collections.api.block.procedure.primitive.FloatProcedure;
 import org.eclipse.collections.api.factory.primitive.FloatLists;
 import org.eclipse.collections.api.list.primitive.FloatList;
 
@@ -49,6 +55,31 @@ public class FloatIterableAssert extends AbstractPrimitiveIterableAssert<FloatIt
     }
 
     throw assertionError(elementsShouldMatch(actual, nonMatches.size() == 1 ? nonMatches.getFirst() : nonMatches, predicateDescription));
+  }
+
+  public FloatIterableAssert allSatisfy(FloatProcedure requirements) {
+    return executeAssertion(() -> {
+      isNotNull();
+      isNotEmpty();
+      requireNonNull(requirements, "The FloatProcedure expressing the assertions requirements must not be null");
+
+      RichIterable<UnsatisfiedRequirement> unsatisfiedRequirements = actual.collect(element -> failsRequirements(requirements, element))
+        .collectIf(Optional::isPresent, Optional::get);
+      if (unsatisfiedRequirements.isEmpty()) {
+        return;
+      }
+
+      throw assertionError(elementsShouldSatisfy(actual, unsatisfiedRequirements.toList(), info));
+    });
+  }
+
+  private static Optional<UnsatisfiedRequirement> failsRequirements(FloatProcedure requirements, float element) {
+    try {
+      requirements.value(element);
+    } catch (AssertionError ex) {
+      return Optional.of(new UnsatisfiedRequirement(element, ex));
+    }
+    return Optional.empty();
   }
 
   public FloatIterableAssert contains(float... values) {

@@ -17,11 +17,17 @@ package org.assertj.eclipse.collections.api;
 
 import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
+import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 
+import java.util.Optional;
+
+import org.assertj.core.error.UnsatisfiedRequirement;
 import org.assertj.core.presentation.PredicateDescription;
+import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.ShortIterable;
 import org.eclipse.collections.api.block.predicate.primitive.ShortPredicate;
+import org.eclipse.collections.api.block.procedure.primitive.ShortProcedure;
 import org.eclipse.collections.api.factory.primitive.ShortLists;
 import org.eclipse.collections.api.list.primitive.ShortList;
 
@@ -49,6 +55,31 @@ public class ShortIterableAssert extends AbstractPrimitiveIterableAssert<ShortIt
     }
 
     throw assertionError(elementsShouldMatch(actual, nonMatches.size() == 1 ? nonMatches.getFirst() : nonMatches, predicateDescription));
+  }
+
+  public ShortIterableAssert allSatisfy(ShortProcedure requirements) {
+    return executeAssertion(() -> {
+      isNotNull();
+      isNotEmpty();
+      requireNonNull(requirements, "The ShortProcedure expressing the assertions requirements must not be null");
+
+      RichIterable<UnsatisfiedRequirement> unsatisfiedRequirements = actual.collect(element -> failsRequirements(requirements, element))
+        .collectIf(Optional::isPresent, Optional::get);
+      if (unsatisfiedRequirements.isEmpty()) {
+        return;
+      }
+
+      throw assertionError(elementsShouldSatisfy(actual, unsatisfiedRequirements.toList(), info));
+    });
+  }
+
+  private static Optional<UnsatisfiedRequirement> failsRequirements(ShortProcedure requirements, short element) {
+    try {
+      requirements.value(element);
+    } catch (AssertionError ex) {
+      return Optional.of(new UnsatisfiedRequirement(element, ex));
+    }
+    return Optional.empty();
   }
 
   public ShortIterableAssert contains(short... values) {

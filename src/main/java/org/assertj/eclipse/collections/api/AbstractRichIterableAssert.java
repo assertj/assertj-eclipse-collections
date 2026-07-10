@@ -17,6 +17,7 @@ package org.assertj.eclipse.collections.api;
 
 import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
+import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
 import static org.assertj.core.error.ShouldBeAnArray.shouldBeAnArray;
 import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
@@ -34,12 +35,16 @@ import static org.assertj.eclipse.collections.util.RichIterableUtil.sizeOf;
 
 import java.lang.reflect.Array;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.assertj.core.annotation.CheckReturnValue;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.AbstractIterableAssert;
+import org.assertj.core.api.ThrowingConsumer;
+import org.assertj.core.error.UnsatisfiedRequirement;
 import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.PrimitiveIterable;
 import org.eclipse.collections.api.RichIterable;
@@ -90,6 +95,39 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
     }
 
     throw assertionError(elementsShouldMatch(actual, nonMatches.size() == 1 ? nonMatches.getFirst() : nonMatches, predicateDescription));
+  }
+
+  @Override
+  public SELF allSatisfy(Consumer<? super ELEMENT> requirements) {
+    return executeAssertion(() -> assertAllSatisfy(requirements));
+  }
+
+  @Override
+  public SELF allSatisfy(ThrowingConsumer<? super ELEMENT> requirements) {
+    return allSatisfy(((Consumer<? super ELEMENT>) requirements));
+  }
+
+  private void assertAllSatisfy(Consumer<? super ELEMENT> requirements) {
+    isNotNull();
+    isNotEmpty();
+    requireNonNull(requirements, "The Consumer<T> expressing the assertions requirements must not be null");
+
+    RichIterable<UnsatisfiedRequirement> unsatisfiedRequirements = actual.collect(element -> failsRequirements(requirements, element))
+      .collectIf(Optional::isPresent, Optional::get);
+    if (unsatisfiedRequirements.isEmpty()) {
+      return;
+    }
+
+    throw assertionError(elementsShouldSatisfy(actual, unsatisfiedRequirements.toList(), info));
+  }
+
+  private static <E> Optional<UnsatisfiedRequirement> failsRequirements(Consumer<? super E> requirements, E element) {
+    try {
+      requirements.accept(element);
+    } catch (AssertionError ex) {
+      return Optional.of(new UnsatisfiedRequirement(element, ex));
+    }
+    return Optional.empty();
   }
 
   @Override

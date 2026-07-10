@@ -17,12 +17,17 @@ package org.assertj.eclipse.collections.api;
 
 import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
+import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 
+import java.util.Optional;
+import java.util.function.IntConsumer;
 import java.util.function.IntPredicate;
 
+import org.assertj.core.error.UnsatisfiedRequirement;
 import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.IntIterable;
+import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.factory.primitive.IntLists;
 import org.eclipse.collections.api.list.primitive.IntList;
 
@@ -50,6 +55,31 @@ public class IntIterableAssert extends AbstractPrimitiveIterableAssert<IntIterab
     }
 
     throw assertionError(elementsShouldMatch(actual, nonMatches.size() == 1 ? nonMatches.getFirst() : nonMatches, predicateDescription));
+  }
+
+  public IntIterableAssert allSatisfy(IntConsumer requirements) {
+    return executeAssertion(() -> {
+      isNotNull();
+      isNotEmpty();
+      requireNonNull(requirements, "The IntConsumer expressing the assertions requirements must not be null");
+
+      RichIterable<UnsatisfiedRequirement> unsatisfiedRequirements = actual.collect(element -> failsRequirements(requirements, element))
+        .collectIf(Optional::isPresent, Optional::get);
+      if (unsatisfiedRequirements.isEmpty()) {
+        return;
+      }
+
+      throw assertionError(elementsShouldSatisfy(actual, unsatisfiedRequirements.toList(), info));
+    });
+  }
+
+  private static Optional<UnsatisfiedRequirement> failsRequirements(IntConsumer requirements, int element) {
+    try {
+      requirements.accept(element);
+    } catch (AssertionError ex) {
+      return Optional.of(new UnsatisfiedRequirement(element, ex));
+    }
+    return Optional.empty();
   }
 
   public IntIterableAssert contains(int... values) {

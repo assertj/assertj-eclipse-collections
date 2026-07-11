@@ -19,6 +19,7 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
 import static org.assertj.core.error.ShouldContain.shouldContain;
+import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 
 import java.util.Optional;
 
@@ -30,6 +31,7 @@ import org.eclipse.collections.api.block.predicate.primitive.FloatPredicate;
 import org.eclipse.collections.api.block.procedure.primitive.FloatProcedure;
 import org.eclipse.collections.api.factory.primitive.FloatLists;
 import org.eclipse.collections.api.list.primitive.FloatList;
+import org.eclipse.collections.api.list.primitive.ImmutableFloatList;
 
 public class FloatIterableAssert extends AbstractPrimitiveIterableAssert<FloatIterableAssert, FloatIterable> {
   public FloatIterableAssert(FloatIterable actual) {
@@ -93,6 +95,19 @@ public class FloatIterableAssert extends AbstractPrimitiveIterableAssert<FloatIt
       }
 
       throw assertionError(shouldContain(actual, values, notFound));
+    });
+  }
+
+  public FloatIterableAssert doesNotContain(float... values) {
+    return executeAssertion(() -> {
+      isNotNull();
+
+      ImmutableFloatList found = FloatLists.immutable.of(values).select(actual::contains);
+      if (found.isEmpty()) {
+        return;
+      }
+
+      throw assertionError(shouldNotContain(actual, values, found));
     });
   }
 }

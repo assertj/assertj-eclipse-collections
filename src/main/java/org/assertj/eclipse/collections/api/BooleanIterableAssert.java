@@ -19,6 +19,7 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
 import static org.assertj.core.error.ShouldContain.shouldContain;
+import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 
 import java.util.Optional;
 
@@ -30,6 +31,7 @@ import org.eclipse.collections.api.block.predicate.primitive.BooleanPredicate;
 import org.eclipse.collections.api.block.procedure.primitive.BooleanProcedure;
 import org.eclipse.collections.api.factory.primitive.BooleanLists;
 import org.eclipse.collections.api.list.primitive.BooleanList;
+import org.eclipse.collections.api.list.primitive.ImmutableBooleanList;
 
 public class BooleanIterableAssert extends AbstractPrimitiveIterableAssert<BooleanIterableAssert, BooleanIterable> {
   public BooleanIterableAssert(BooleanIterable actual) {
@@ -93,6 +95,19 @@ public class BooleanIterableAssert extends AbstractPrimitiveIterableAssert<Boole
       }
 
       throw assertionError(shouldContain(actual, values, notFound));
+    });
+  }
+
+  public BooleanIterableAssert doesNotContain(boolean... values) {
+    return executeAssertion(() -> {
+      isNotNull();
+
+      ImmutableBooleanList found = BooleanLists.immutable.of(values).select(actual::contains);
+      if (found.isEmpty()) {
+        return;
+      }
+
+      throw assertionError(shouldNotContain(actual, values, found));
     });
   }
 }

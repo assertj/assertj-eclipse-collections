@@ -19,6 +19,7 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
 import static org.assertj.core.error.ShouldContain.shouldContain;
+import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 
 import java.util.Optional;
 import java.util.function.LongConsumer;
@@ -29,6 +30,7 @@ import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.LongIterable;
 import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.factory.primitive.LongLists;
+import org.eclipse.collections.api.list.primitive.ImmutableLongList;
 import org.eclipse.collections.api.list.primitive.LongList;
 
 public class LongIterableAssert extends AbstractPrimitiveIterableAssert<LongIterableAssert, LongIterable> {
@@ -93,6 +95,19 @@ public class LongIterableAssert extends AbstractPrimitiveIterableAssert<LongIter
       }
 
       throw assertionError(shouldContain(actual, values, notFound));
+    });
+  }
+
+  public LongIterableAssert doesNotContain(long... values) {
+    return executeAssertion(() -> {
+      isNotNull();
+
+      ImmutableLongList found = LongLists.immutable.of(values).select(actual::contains);
+      if (found.isEmpty()) {
+        return;
+      }
+
+      throw assertionError(shouldNotContain(actual, values, found));
     });
   }
 }

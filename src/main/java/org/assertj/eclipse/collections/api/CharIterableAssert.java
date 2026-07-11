@@ -19,6 +19,7 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
 import static org.assertj.core.error.ShouldContain.shouldContain;
+import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 
 import java.util.Optional;
 
@@ -30,6 +31,7 @@ import org.eclipse.collections.api.block.predicate.primitive.CharPredicate;
 import org.eclipse.collections.api.block.procedure.primitive.CharProcedure;
 import org.eclipse.collections.api.factory.primitive.CharLists;
 import org.eclipse.collections.api.list.primitive.CharList;
+import org.eclipse.collections.api.list.primitive.ImmutableCharList;
 
 public class CharIterableAssert extends AbstractPrimitiveIterableAssert<CharIterableAssert, CharIterable> {
   public CharIterableAssert(CharIterable actual) {
@@ -93,6 +95,19 @@ public class CharIterableAssert extends AbstractPrimitiveIterableAssert<CharIter
       }
 
       throw assertionError(shouldContain(actual, values, notFound));
+    });
+  }
+
+  public CharIterableAssert doesNotContain(char... values) {
+    return executeAssertion(() -> {
+      isNotNull();
+
+      ImmutableCharList found = CharLists.immutable.of(values).select(actual::contains);
+      if (found.isEmpty()) {
+        return;
+      }
+
+      throw assertionError(shouldNotContain(actual, values, found));
     });
   }
 }

@@ -19,6 +19,7 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
 import static org.assertj.core.error.ShouldContain.shouldContain;
+import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 
 import java.util.Optional;
 import java.util.function.IntConsumer;
@@ -29,6 +30,7 @@ import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.IntIterable;
 import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.factory.primitive.IntLists;
+import org.eclipse.collections.api.list.primitive.ImmutableIntList;
 import org.eclipse.collections.api.list.primitive.IntList;
 
 public class IntIterableAssert extends AbstractPrimitiveIterableAssert<IntIterableAssert, IntIterable> {
@@ -87,12 +89,24 @@ public class IntIterableAssert extends AbstractPrimitiveIterableAssert<IntIterab
       isNotNull();
 
       IntIterable notFound = IntLists.immutable.of(values).reject(actual::contains);
-
       if (notFound.isEmpty()) {
         return;
       }
 
       throw assertionError(shouldContain(actual, values, notFound));
+    });
+  }
+
+  public IntIterableAssert doesNotContain(int... values) {
+    return executeAssertion(() -> {
+      isNotNull();
+
+      ImmutableIntList found = IntLists.immutable.of(values).select(actual::contains);
+      if (found.isEmpty()) {
+        return;
+      }
+
+      throw assertionError(shouldNotContain(actual, values, found));
     });
   }
 }

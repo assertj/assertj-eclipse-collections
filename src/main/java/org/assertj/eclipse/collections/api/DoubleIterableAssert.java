@@ -19,6 +19,7 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
 import static org.assertj.core.error.ShouldContain.shouldContain;
+import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 
 import java.util.Optional;
 import java.util.function.DoubleConsumer;
@@ -30,6 +31,7 @@ import org.eclipse.collections.api.DoubleIterable;
 import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.factory.primitive.DoubleLists;
 import org.eclipse.collections.api.list.primitive.DoubleList;
+import org.eclipse.collections.api.list.primitive.ImmutableDoubleList;
 
 public class DoubleIterableAssert extends AbstractPrimitiveIterableAssert<DoubleIterableAssert, DoubleIterable> {
   public DoubleIterableAssert(DoubleIterable actual) {
@@ -93,6 +95,19 @@ public class DoubleIterableAssert extends AbstractPrimitiveIterableAssert<Double
       }
 
       throw assertionError(shouldContain(actual, values, notFound));
+    });
+  }
+
+  public DoubleIterableAssert doesNotContain(double... values) {
+    return executeAssertion(() -> {
+      isNotNull();
+
+      ImmutableDoubleList found = DoubleLists.immutable.of(values).select(actual::contains);
+      if (found.isEmpty()) {
+        return;
+      }
+
+      throw assertionError(shouldNotContain(actual, values, found));
     });
   }
 }

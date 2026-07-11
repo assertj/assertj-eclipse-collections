@@ -19,6 +19,7 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
 import static org.assertj.core.error.ShouldContain.shouldContain;
+import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 
 import java.util.Optional;
 
@@ -30,6 +31,7 @@ import org.eclipse.collections.api.block.predicate.primitive.BytePredicate;
 import org.eclipse.collections.api.block.procedure.primitive.ByteProcedure;
 import org.eclipse.collections.api.factory.primitive.ByteLists;
 import org.eclipse.collections.api.list.primitive.ByteList;
+import org.eclipse.collections.api.list.primitive.ImmutableByteList;
 
 public class ByteIterableAssert extends AbstractPrimitiveIterableAssert<ByteIterableAssert, ByteIterable> {
 
@@ -94,6 +96,19 @@ public class ByteIterableAssert extends AbstractPrimitiveIterableAssert<ByteIter
       }
 
       throw assertionError(shouldContain(actual, values, notFound));
+    });
+  }
+
+  public ByteIterableAssert doesNotContain(byte... values) {
+    return executeAssertion(() -> {
+      isNotNull();
+
+      ImmutableByteList found = ByteLists.immutable.of(values).select(actual::contains);
+      if (found.isEmpty()) {
+        return;
+      }
+
+      throw assertionError(shouldNotContain(actual, values, found));
     });
   }
 }

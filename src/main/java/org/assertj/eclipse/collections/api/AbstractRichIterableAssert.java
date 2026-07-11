@@ -30,6 +30,7 @@ import static org.assertj.core.error.ShouldHaveSizeGreaterThanOrEqualTo.shouldHa
 import static org.assertj.core.error.ShouldHaveSizeLessThan.shouldHaveSizeLessThan;
 import static org.assertj.core.error.ShouldHaveSizeLessThanOrEqualTo.shouldHaveSizeLessThanOrEqualTo;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
+import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 import static org.assertj.core.util.Preconditions.checkArgument;
 import static org.assertj.eclipse.collections.util.RichIterableUtil.sizeOf;
 
@@ -146,6 +147,21 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
     }
 
     throw assertionError(shouldContain(actual, valuesList, notFound)); // TODO: ComparisonStrategy???
+  }
+
+  @Override
+  protected void assertDoesNotContain(ELEMENT[] values) {
+    isNotNull();
+    requireNonNull(values, "The array of values to look for should not be null");
+
+    ArrayAdapter<ELEMENT> valuesList = ArrayAdapter.adapt(values);
+    MutableList<ELEMENT> found = valuesList.select(actual::contains);
+
+    if (found.isEmpty()) {
+      return;
+    }
+
+    throw assertionError(shouldNotContain(actual, valuesList, found)); // TODO: ComparisonStrategy???
   }
 
   @Override

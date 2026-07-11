@@ -22,6 +22,8 @@ import static org.assertj.core.error.ShouldBeAnArray.shouldBeAnArray;
 import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.core.error.ShouldContain.shouldContain;
+import static org.assertj.core.error.ShouldContainNull.shouldContainNull;
+import static org.assertj.core.error.ShouldContainOnlyNulls.shouldContainOnlyNulls;
 import static org.assertj.core.error.ShouldHaveSameSizeAs.shouldHaveSameSizeAs;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldHaveSizeBetween.shouldHaveSizeBetween;
@@ -31,6 +33,7 @@ import static org.assertj.core.error.ShouldHaveSizeLessThan.shouldHaveSizeLessTh
 import static org.assertj.core.error.ShouldHaveSizeLessThanOrEqualTo.shouldHaveSizeLessThanOrEqualTo;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
+import static org.assertj.core.error.ShouldNotContainNull.shouldNotContainNull;
 import static org.assertj.core.util.Preconditions.checkArgument;
 import static org.assertj.eclipse.collections.util.RichIterableUtil.sizeOf;
 
@@ -162,6 +165,50 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
     }
 
     throw assertionError(shouldNotContain(actual, valuesList, found)); // TODO: ComparisonStrategy???
+  }
+
+  @Override
+  public SELF containsNull() {
+    return executeAssertion(() -> {
+      isNotNull();
+
+      if (actual.contains(null)) {
+        return;
+      }
+
+      throw assertionError(shouldContainNull(actual));
+    });
+  }
+
+  @Override
+  public SELF containsOnlyNulls() {
+    return executeAssertion(() -> {
+      isNotNull();
+
+      if (actual.isEmpty()) {
+        throw assertionError(shouldContainOnlyNulls(actual));
+      }
+
+      RichIterable<? extends ELEMENT> nonNullElements = actual.select(Objects::nonNull);
+      if (nonNullElements.isEmpty()) {
+        return;
+      }
+
+      throw assertionError(shouldContainOnlyNulls(actual, nonNullElements));
+    });
+  }
+
+  @Override
+  public SELF doesNotContainNull() {
+    return executeAssertion(() -> {
+      isNotNull();
+
+      if (!actual.contains(null)) {
+        return;
+      }
+
+      throw assertionError(shouldNotContainNull(actual));
+    });
   }
 
   @Override

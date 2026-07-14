@@ -39,6 +39,12 @@ class PrimitiveIterableAssert_Contains_Test {
     }
 
     @PrimitiveIterableParameterizedTest(type = PrimitiveType.BOOLEAN)
+    void passesBothEmpty(PrimitiveIterableAssertFactory<BooleanIterableAssert> assertFactory) {
+      assertThatNoException().isThrownBy(() ->
+        assertFactory.fromElements().contains());
+    }
+
+    @PrimitiveIterableParameterizedTest(type = PrimitiveType.BOOLEAN)
     void fails(PrimitiveIterableAssertFactory<BooleanIterableAssert> assertFactory) {
       assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(() -> assertFactory.fromElements(false, false, false).contains(true))
@@ -52,6 +58,12 @@ class PrimitiveIterableAssert_Contains_Test {
     void passes(PrimitiveIterableAssertFactory<ByteIterableAssert> assertFactory) {
       assertThatNoException().isThrownBy(() ->
         assertFactory.fromElements((byte) 1, (byte) 2, (byte) 3).contains((byte) 2));
+    }
+
+    @PrimitiveIterableParameterizedTest(type = PrimitiveType.BYTE)
+    void passesBothEmpty(PrimitiveIterableAssertFactory<ByteIterableAssert> assertFactory) {
+      assertThatNoException().isThrownBy(() ->
+        assertFactory.fromElements().contains());
     }
 
     @PrimitiveIterableParameterizedTest(type = PrimitiveType.BYTE)
@@ -71,6 +83,12 @@ class PrimitiveIterableAssert_Contains_Test {
     }
 
     @PrimitiveIterableParameterizedTest(type = PrimitiveType.CHAR)
+    void passesBothEmpty(PrimitiveIterableAssertFactory<CharIterableAssert> assertFactory) {
+      assertThatNoException().isThrownBy(() ->
+        assertFactory.fromElements().contains());
+    }
+
+    @PrimitiveIterableParameterizedTest(type = PrimitiveType.CHAR)
     void fails(PrimitiveIterableAssertFactory<CharIterableAssert> assertFactory) {
       assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(() -> assertFactory.fromElements('a').contains('z'))
@@ -84,6 +102,12 @@ class PrimitiveIterableAssert_Contains_Test {
     void passes(PrimitiveIterableAssertFactory<DoubleIterableAssert> assertFactory) {
       assertThatNoException().isThrownBy(() ->
         assertFactory.fromElements(1.0, 2.0, 3.0).contains(2.0));
+    }
+
+    @PrimitiveIterableParameterizedTest(type = PrimitiveType.DOUBLE)
+    void passesBothEmpty(PrimitiveIterableAssertFactory<DoubleIterableAssert> assertFactory) {
+      assertThatNoException().isThrownBy(() ->
+        assertFactory.fromElements().contains());
     }
 
     @PrimitiveIterableParameterizedTest(type = PrimitiveType.DOUBLE)
@@ -103,6 +127,12 @@ class PrimitiveIterableAssert_Contains_Test {
     }
 
     @PrimitiveIterableParameterizedTest(type = PrimitiveType.FLOAT)
+    void passesBothEmpty(PrimitiveIterableAssertFactory<FloatIterableAssert> assertFactory) {
+      assertThatNoException().isThrownBy(() ->
+        assertFactory.fromElements().contains());
+    }
+
+    @PrimitiveIterableParameterizedTest(type = PrimitiveType.FLOAT)
     void fails(PrimitiveIterableAssertFactory<FloatIterableAssert> assertFactory) {
       assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(() -> assertFactory.fromElements(1.0f).contains(99.0f))
@@ -116,6 +146,12 @@ class PrimitiveIterableAssert_Contains_Test {
     void passes(PrimitiveIterableAssertFactory<IntIterableAssert> assertFactory) {
       assertThatNoException().isThrownBy(() ->
         assertFactory.fromElements(1, 2, 3).contains(2));
+    }
+
+    @PrimitiveIterableParameterizedTest(type = PrimitiveType.INT)
+    void passesBothEmpty(PrimitiveIterableAssertFactory<IntIterableAssert> assertFactory) {
+      assertThatNoException().isThrownBy(() ->
+        assertFactory.fromElements().contains());
     }
 
     @PrimitiveIterableParameterizedTest(type = PrimitiveType.INT)
@@ -135,6 +171,12 @@ class PrimitiveIterableAssert_Contains_Test {
     }
 
     @PrimitiveIterableParameterizedTest(type = PrimitiveType.LONG)
+    void passesBothEmpty(PrimitiveIterableAssertFactory<LongIterableAssert> assertFactory) {
+      assertThatNoException().isThrownBy(() ->
+        assertFactory.fromElements().contains());
+    }
+
+    @PrimitiveIterableParameterizedTest(type = PrimitiveType.LONG)
     void fails(PrimitiveIterableAssertFactory<LongIterableAssert> assertFactory) {
       assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(() -> assertFactory.fromElements(1L).contains(99L))
@@ -148,6 +190,12 @@ class PrimitiveIterableAssert_Contains_Test {
     void passes(PrimitiveIterableAssertFactory<ShortIterableAssert> assertFactory) {
       assertThatNoException().isThrownBy(() ->
         assertFactory.fromElements((short) 1, (short) 2, (short) 3).contains((short) 2));
+    }
+
+    @PrimitiveIterableParameterizedTest(type = PrimitiveType.SHORT)
+    void passesBothEmpty(PrimitiveIterableAssertFactory<ShortIterableAssert> assertFactory) {
+      assertThatNoException().isThrownBy(() ->
+        assertFactory.fromElements().contains());
     }
 
     @PrimitiveIterableParameterizedTest(type = PrimitiveType.SHORT)

@@ -19,6 +19,7 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
 import static org.assertj.core.error.ShouldContain.shouldContain;
+import static org.assertj.core.error.ShouldContainAnyOf.shouldContainAnyOf;
 import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 
 import java.util.Optional;
@@ -95,6 +96,23 @@ public class ShortIterableAssert extends AbstractPrimitiveIterableAssert<ShortIt
       }
 
       throw assertionError(shouldContain(actual, values, notFound));
+    });
+  }
+
+  public ShortIterableAssert containsAnyOf(short... values) {
+    return executeAssertion(() -> {
+      isNotNull();
+      requireNonNull(values, "The array of values to look for should not be null");
+
+      if (actual.isEmpty() && values.length == 0) {
+        return;
+      }
+
+      if (actual.containsAny(values)) {
+        return;
+      }
+
+      throw assertionError(shouldContainAnyOf(actual, values));
     });
   }
 

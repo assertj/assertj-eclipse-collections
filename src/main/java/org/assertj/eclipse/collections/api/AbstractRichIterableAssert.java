@@ -22,6 +22,7 @@ import static org.assertj.core.error.ShouldBeAnArray.shouldBeAnArray;
 import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.core.error.ShouldContain.shouldContain;
+import static org.assertj.core.error.ShouldContainAnyOf.shouldContainAnyOf;
 import static org.assertj.core.error.ShouldContainNull.shouldContainNull;
 import static org.assertj.core.error.ShouldContainOnlyNulls.shouldContainOnlyNulls;
 import static org.assertj.core.error.ShouldHaveSameSizeAs.shouldHaveSameSizeAs;
@@ -52,6 +53,7 @@ import org.assertj.core.error.UnsatisfiedRequirement;
 import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.PrimitiveIterable;
 import org.eclipse.collections.api.RichIterable;
+import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
@@ -150,6 +152,23 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
     }
 
     throw assertionError(shouldContain(actual, valuesList, notFound)); // TODO: ComparisonStrategy???
+  }
+
+  @Override
+  protected void assertContainsAnyOf(ELEMENT[] values) {
+    isNotNull();
+    requireNonNull(values, "The array of values to look for should not be null");
+
+    if (actual.isEmpty() && values.length == 0) {
+      return;
+    }
+
+    ImmutableList<ELEMENT> valuesToSearchFor = Lists.immutable.of(values);
+    if (actual.containsAnyIterable(valuesToSearchFor)) {
+      return;
+    }
+
+    throw assertionError(shouldContainAnyOf(actual, values)); // TODO: ComparisonStrategy???
   }
 
   @Override

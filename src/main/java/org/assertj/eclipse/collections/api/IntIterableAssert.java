@@ -16,6 +16,7 @@
 package org.assertj.eclipse.collections.api;
 
 import static java.util.Objects.requireNonNull;
+import static org.assertj.core.error.AnyElementShouldMatch.anyElementShouldMatch;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
 import static org.assertj.core.error.ShouldContain.shouldContain;
@@ -30,6 +31,7 @@ import org.assertj.core.error.UnsatisfiedRequirement;
 import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.IntIterable;
 import org.eclipse.collections.api.RichIterable;
+import org.eclipse.collections.api.block.predicate.primitive.BooleanPredicate;
 import org.eclipse.collections.api.factory.primitive.IntLists;
 import org.eclipse.collections.api.list.primitive.ImmutableIntList;
 import org.eclipse.collections.api.list.primitive.IntList;
@@ -83,6 +85,22 @@ public class IntIterableAssert extends AbstractPrimitiveIterableAssert<IntIterab
       return Optional.of(new UnsatisfiedRequirement(element, ex));
     }
     return Optional.empty();
+  }
+
+  public IntIterableAssert anyMatch(IntPredicate predicate) {
+    return executeAssertion(() -> assertAnyMatch(predicate, PredicateDescription.GIVEN));
+  }
+
+  public IntIterableAssert anyMatch(IntPredicate predicate, String predicateDescription) {
+    return executeAssertion(() -> assertAnyMatch(predicate, new PredicateDescription(predicateDescription)));
+  }
+
+  private void assertAnyMatch(IntPredicate predicate, PredicateDescription predicateDescription) {
+    isNotNull();
+    requireNonNull(predicate, "The predicate to evaluate should not be null");
+    if (actual.noneSatisfy(predicate::test)) {
+      throw assertionError(anyElementShouldMatch(actual, predicateDescription));
+    }
   }
 
   public IntIterableAssert contains(int... values) {

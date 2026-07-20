@@ -16,6 +16,7 @@
 package org.assertj.eclipse.collections.api;
 
 import static java.util.Objects.requireNonNull;
+import static org.assertj.core.error.AnyElementShouldMatch.anyElementShouldMatch;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
 import static org.assertj.core.error.ShouldContain.shouldContain;
@@ -83,6 +84,22 @@ public class CharIterableAssert extends AbstractPrimitiveIterableAssert<CharIter
       return Optional.of(new UnsatisfiedRequirement(element, ex));
     }
     return Optional.empty();
+  }
+
+  public CharIterableAssert anyMatch(CharPredicate predicate) {
+    return executeAssertion(() -> assertAnyMatch(predicate, PredicateDescription.GIVEN));
+  }
+
+  public CharIterableAssert anyMatch(CharPredicate predicate, String predicateDescription) {
+    return executeAssertion(() -> assertAnyMatch(predicate, new PredicateDescription(predicateDescription)));
+  }
+
+  private void assertAnyMatch(CharPredicate predicate, PredicateDescription predicateDescription) {
+    isNotNull();
+    requireNonNull(predicate, "The predicate to evaluate should not be null");
+    if (actual.noneSatisfy(predicate)) {
+      throw assertionError(anyElementShouldMatch(actual, predicateDescription));
+    }
   }
 
   public CharIterableAssert contains(char... values) {

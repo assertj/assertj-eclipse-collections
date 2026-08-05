@@ -29,4 +29,5 @@ open module org.assertj.eclipse.collections.test {
   requires org.eclipse.collections.impl;
   requires org.junit.jupiter.api;
   requires org.junit.jupiter.params;
+  requires com.tngtech.archunit;
 }

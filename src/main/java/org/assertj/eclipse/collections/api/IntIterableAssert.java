@@ -19,6 +19,7 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.AnyElementShouldMatch.anyElementShouldMatch;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
+import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfyAny;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 import static org.assertj.core.error.ShouldContainAnyOf.shouldContainAnyOf;
 import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
@@ -31,8 +32,9 @@ import org.assertj.core.error.UnsatisfiedRequirement;
 import org.assertj.core.presentation.PredicateDescription;
 import org.eclipse.collections.api.IntIterable;
 import org.eclipse.collections.api.RichIterable;
-import org.eclipse.collections.api.block.predicate.primitive.BooleanPredicate;
+import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.factory.primitive.IntLists;
+import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.list.primitive.ImmutableIntList;
 import org.eclipse.collections.api.list.primitive.IntList;
 
@@ -101,6 +103,26 @@ public class IntIterableAssert extends AbstractPrimitiveIterableAssert<IntIterab
     if (actual.noneSatisfy(predicate::test)) {
       throw assertionError(anyElementShouldMatch(actual, predicateDescription));
     }
+  }
+
+  public IntIterableAssert anySatisfy(IntConsumer requirements) {
+    return executeAssertion(() -> assertAnySatisfy(requirements));
+  }
+
+  private void assertAnySatisfy(IntConsumer requirements) {
+    isNotNull();
+    requireNonNull(requirements, "The IntConsumer expressing the assertions requirements must not be null");
+
+    MutableList<UnsatisfiedRequirement> unsatisfiedRequirements = Lists.mutable.empty();
+    if (actual.anySatisfy(element -> {
+      Optional<UnsatisfiedRequirement> result = failsRequirements(requirements, element);
+      result.ifPresent(unsatisfiedRequirements::add);
+      return result.isEmpty();
+    })) {
+      return;
+    }
+
+    throw assertionError(elementsShouldSatisfyAny(actual, unsatisfiedRequirements, info));
   }
 
   public IntIterableAssert contains(int... values) {

@@ -19,6 +19,7 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.AnyElementShouldMatch.anyElementShouldMatch;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
+import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfyAny;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 import static org.assertj.core.error.ShouldContainAnyOf.shouldContainAnyOf;
 import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
@@ -31,7 +32,9 @@ import org.eclipse.collections.api.ByteIterable;
 import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.block.predicate.primitive.BytePredicate;
 import org.eclipse.collections.api.block.procedure.primitive.ByteProcedure;
+import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.factory.primitive.ByteLists;
+import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.list.primitive.ByteList;
 import org.eclipse.collections.api.list.primitive.ImmutableByteList;
 
@@ -101,6 +104,26 @@ public class ByteIterableAssert extends AbstractPrimitiveIterableAssert<ByteIter
     if (actual.noneSatisfy(predicate)) {
       throw assertionError(anyElementShouldMatch(actual, predicateDescription));
     }
+  }
+
+  public ByteIterableAssert anySatisfy(ByteProcedure requirements) {
+    return executeAssertion(() -> assertAnySatisfy(requirements));
+  }
+
+  private void assertAnySatisfy(ByteProcedure requirements) {
+    isNotNull();
+    requireNonNull(requirements, "The ByteProcedure expressing the assertions requirements must not be null");
+
+    MutableList<UnsatisfiedRequirement> unsatisfiedRequirements = Lists.mutable.empty();
+    if (actual.anySatisfy(element -> {
+      Optional<UnsatisfiedRequirement> result = failsRequirements(requirements, element);
+      result.ifPresent(unsatisfiedRequirements::add);
+      return result.isEmpty();
+    })) {
+      return;
+    }
+
+    throw assertionError(elementsShouldSatisfyAny(actual, unsatisfiedRequirements, info));
   }
 
   public ByteIterableAssert contains(byte... values) {

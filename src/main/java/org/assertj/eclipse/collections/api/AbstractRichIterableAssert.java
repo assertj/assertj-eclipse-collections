@@ -19,6 +19,7 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.error.AnyElementShouldMatch.anyElementShouldMatch;
 import static org.assertj.core.error.ElementsShouldMatch.elementsShouldMatch;
 import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfy;
+import static org.assertj.core.error.ElementsShouldSatisfy.elementsShouldSatisfyAny;
 import static org.assertj.core.error.ShouldBeAnArray.shouldBeAnArray;
 import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
@@ -153,6 +154,32 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
     if (actual.noneSatisfy(predicate::test)) {
       throw assertionError(anyElementShouldMatch(actual, predicateDescription));
     }
+  }
+
+  @Override
+  public SELF anySatisfy(Consumer<? super ELEMENT> requirements) {
+    return executeAssertion(() -> assertAnySatisfy(requirements));
+  }
+
+  @Override
+  public SELF anySatisfy(ThrowingConsumer<? super ELEMENT> requirements) {
+    return executeAssertion(() -> assertAnySatisfy(requirements));
+  }
+
+  private void assertAnySatisfy(Consumer<? super ELEMENT> requirements) {
+    isNotNull();
+    requireNonNull(requirements, "The Consumer<T> expressing the assertions requirements must not be null");
+
+    MutableList<UnsatisfiedRequirement> unsatisfiedRequirements = Lists.mutable.empty();
+    for (ELEMENT element : actual) {
+      Optional<UnsatisfiedRequirement> result = failsRequirements(requirements, element);
+      if (result.isEmpty()) {
+        return; // element satisfied the requirements
+      }
+      unsatisfiedRequirements.add(result.get());
+    }
+
+    throw assertionError(elementsShouldSatisfyAny(actual, unsatisfiedRequirements, info));
   }
 
   @Override

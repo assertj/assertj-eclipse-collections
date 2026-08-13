@@ -308,6 +308,24 @@ public abstract class AbstractRichIterableAssert<SELF extends AbstractRichIterab
     return internalFilteredOn(predicate::test);
   }
 
+  @Override
+  @CheckReturnValue
+  public SELF filteredOnAssertions(Consumer<? super ELEMENT> elementAssertions) {
+    checkArgument(elementAssertions != null, "The element assertions should not be null");
+    return internalFilteredOn(byPassingAssertions(elementAssertions)::test);
+  }
+
+  protected static <T> Predicate<T> byPassingAssertions(Consumer<? super T> assertions) {
+    return objectToTest -> {
+      try {
+        assertions.accept(objectToTest);
+        return true;
+      } catch (AssertionError e) {
+        return false;
+      }
+    };
+  }
+
   /**
    * Verifies that the size of the actual RichIterable is equal to the size of the given iterable.
    *
